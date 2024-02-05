@@ -2,7 +2,7 @@ const express = require("express");
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const dotenv = require('dotenv').config()
-
+const cors = require('cors')
 const port = process.env.PORT || 5000;
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 const options = {
@@ -27,6 +27,7 @@ const options = {
 const specs = swaggerJsDoc(options);
 
 const app = express();
+app.use(cors())
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, { customCssUrl: CSS_URL }));
 
