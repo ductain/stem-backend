@@ -4,6 +4,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const dotenv = require('dotenv').config()
 
 const port = process.env.PORT || 5000;
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 const options = {
 	definition: {
 		openapi: "3.0.0",
@@ -27,7 +28,7 @@ const specs = swaggerJsDoc(options);
 
 const app = express();
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, { customCssUrl: CSS_URL }));
 
 const provinceRoute = require("./routes/Province");
 const schoolRoute = require("./routes/School");
