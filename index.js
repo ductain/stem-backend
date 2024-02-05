@@ -18,7 +18,7 @@ const options = {
 				url: 'http://localhost:5000',
 			},
 			{
-				url: process.env.SWAGGER_URL,
+				url: 'https://stem-backend.vercel.app/',
 			},
 		],
 	},
