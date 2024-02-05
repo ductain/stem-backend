@@ -3,7 +3,7 @@ const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const dotenv = require('dotenv').config()
 
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const options = {
 	definition: {
 		openapi: "3.0.0",
@@ -13,6 +13,9 @@ const options = {
 			description: "A simple Express Library API",
 		},
 		servers: [
+			{
+				url: 'http://localhost:5000',
+			},
 			{
 				url: process.env.SWAGGER_URL,
 			},
