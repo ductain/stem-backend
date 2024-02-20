@@ -34,8 +34,27 @@ const getGroupById = async (req, res) => {
     res.status(500).json(error);
   }
 };
+const countGroupsInProgram = async (req, res) => {
+  const ProgramId = parseInt(req.query.programId);
 
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("ProgramId", sql.Int, ProgramId)
+      .query(
+        "SELECT COUNT(*) AS GroupCount FROM [Group] WHERE ProgramId = @ProgramId AND Status = 1"
+      );
+    
+    const groupCount = result.recordset[0].GroupCount;
+    res.status(200).json({groupCount});
+  } catch (error) {
+    res.status(500).json(error);
+  }
+  
+};
 module.exports = {
-    getGroups: getGroups,
-    getGroupById: getGroupById
-}
+  getGroups: getGroups,
+  getGroupById: getGroupById,
+  countGroupsInProgram: countGroupsInProgram,
+};

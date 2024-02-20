@@ -1,4 +1,4 @@
-const { getGroups, getGroupById } = require("../controllers/group");
+const { getGroups, getGroupById, countGroupsInProgram } = require("../controllers/group");
 const express = require("express");
 
 /**
@@ -35,6 +35,17 @@ const express = require("express");
  *         ProgramName:
  *           type: string
  *           description: name of the program
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     GroupCountResponse:
+ *       type: object
+ *       properties:
+ *         groupCount:
+ *           type: integer
  */
 
 /**
@@ -88,9 +99,34 @@ const express = require("express");
  *       500:
  *         description: Internal Server Error 
  */
+
+/**
+ * @swagger
+ * /group/count/countByProgram:
+ *   get:
+ *     summary: Get the count of groups in a program
+ *     tags: [Groups]
+ *     parameters:
+ *       - in: query
+ *         name: programId
+ *         description: ID of the program
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GroupCountResponse'
+ *       500:
+ *         description: Internal server error
+ */
 const router = express.Router();
 
 router.get("/", getGroups);
 router.get("/:Id", getGroupById);
+router.get('/count/countByProgram', countGroupsInProgram)
 
 module.exports = router;
