@@ -4,6 +4,9 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const dotenv = require('dotenv').config()
 const cors = require('cors')
 const port = process.env.PORT || 5000;
+const session = require("express-session");
+const passport = require("passport");
+const passportSetup = require("./passport");
 const CSS_URL = " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 const options = {
 	definition: {
@@ -31,6 +34,27 @@ app.use(cors())
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, {customCssUrl: CSS_URL}));
 
+const crypto = require("crypto");
+const secret = crypto.randomBytes(32).toString("hex");
+const salt = crypto.randomBytes(32).toString("hex");
+const salt2 = crypto.randomBytes(16).toString("hex");
+const salt3 = crypto.randomBytes(16).toString("hex");
+const hash = crypto.createHmac("sha256", salt, salt2, salt3);
+hash.update(secret);
+const hashedSecret = hash.digest("hex");
+app.use(
+  session({
+    secret: hashedSecret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const authRoute = require('./routes/Auth')
 const provinceRoute = require("./routes/Province");
 const schoolRoute = require("./routes/School");
 const studentRoute = require("./routes/Student");
@@ -42,6 +66,7 @@ const labRoute = require("./routes/Lab");
 const tutorialRoute = require("./routes/Tutorial");
 const groupRoute = require("./routes/Group");
 app.use(express.json());
+app.use("/auth", authRoute)
 app.use("/province", provinceRoute);
 app.use("/school", schoolRoute);
 app.use("/student", studentRoute);
