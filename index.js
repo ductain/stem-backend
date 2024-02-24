@@ -30,7 +30,9 @@ const options = {
 const specs = swaggerJsDoc(options);
 
 const app = express();
-app.use(cors())
+app.use(cors({
+	origin: 'http://localhost:5173'
+}))
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, {customCssUrl: CSS_URL}));
 
