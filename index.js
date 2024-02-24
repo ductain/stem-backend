@@ -31,7 +31,7 @@ const specs = swaggerJsDoc(options);
 
 const app = express();
 app.use(cors({
-	origin: 'http://localhost:5173/student',
+	origin: 'http://localhost:5173',
 	credentials: true,
 	optionsSuccessStatus: 200,
 	methods: "GET,POST,PUT,DELETE",
