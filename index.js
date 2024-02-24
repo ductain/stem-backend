@@ -34,6 +34,7 @@ app.use(cors({
 	origin: 'http://localhost:5173',
 	credentials: true,
 	optionsSuccessStatus: 200,
+	methods: "GET,POST,PUT,DELETE",
 }))
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, {customCssUrl: CSS_URL}));
