@@ -7,6 +7,7 @@ const cors = require("cors");
 const port = process.env.PORT || 5000;
 const passport = require("passport");
 const passportSetup = require("./passport");
+const MemoryStore = require('memorystore')(session)
 
 const CSS_URL =
   " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
@@ -58,14 +59,14 @@ const hashedSecret = hash.digest("hex");
 
 app.use(
   session({
+	store: new MemoryStore({
+		checkPeriod: 24 * 60 * 60 * 1000
+	}),
     secret: hashedSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "none",
-      httpOnly: true,
-      secure: true,
     },
   })
 );
