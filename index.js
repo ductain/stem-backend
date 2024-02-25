@@ -1,5 +1,5 @@
 const express = require("express");
-const session = require("cookie-session");
+const session = require("express-session");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const dotenv = require("dotenv").config();
@@ -7,6 +7,7 @@ const cors = require("cors");
 const port = process.env.PORT || 5000;
 const passport = require("passport");
 const passportSetup = require("./passport");
+
 const CSS_URL =
   " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 const options = {
@@ -32,6 +33,12 @@ const specs = swaggerJsDoc(options);
 
 const app = express();
 app.use(
+  "/api-docs",
+  swaggerUI.serve,
+  swaggerUI.setup(specs, { customCssUrl: CSS_URL })
+);
+
+app.use(
   cors({
     origin: "http://localhost:5173",
     // credentials: true,
@@ -40,37 +47,33 @@ app.use(
   })
 );
 
-app.use(
-  "/api-docs",
-  swaggerUI.serve,
-  swaggerUI.setup(specs, { customCssUrl: CSS_URL })
-);
+const crypto = require("crypto");
+const secret = crypto.randomBytes(32).toString("hex");
+const salt = crypto.randomBytes(32).toString("hex");
+const salt2 = crypto.randomBytes(16).toString("hex");
+const salt3 = crypto.randomBytes(16).toString("hex");
+const hash = crypto.createHmac("sha256", salt, salt2, salt3);
+hash.update(secret);
+const hashedSecret = hash.digest("hex");
 
-// const crypto = require("crypto");
-// const secret = crypto.randomBytes(32).toString("hex");
-// const salt = crypto.randomBytes(32).toString("hex");
-// const salt2 = crypto.randomBytes(16).toString("hex");
-// const salt3 = crypto.randomBytes(16).toString("hex");
-// const hash = crypto.createHmac("sha256", salt, salt2, salt3);
-// hash.update(secret);
-// const hashedSecret = hash.digest("hex");
+app.set("trust proxy", 1);
+app.use(
+  session({
+    secret: hashedSecret,
+    resave: false,
+    proxy: true,
+    saveUninitialized: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000, sameSite: 'none'},
+  })
+);
 
 // app.use(
 //   session({
-//     secret: hashedSecret,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { maxAge: 24 * 60 * 60 * 1000 },
+//     name: "session",
+//     keys: ["key1"],
+//     maxAge: 24 * 60 * 60 * 1000,
 //   })
 // );
-
-app.use(
-  session({
-    name: "session",
-    keys: ["key1"],
-    maxAge: 24 * 60 * 60 * 1000,
-  })
-);
 
 app.use(passport.initialize());
 app.use(passport.session());
