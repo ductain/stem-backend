@@ -24,7 +24,7 @@ router.get("/logout", (req, res) => {
     if (err) {
       return next(err);
     }
-    res.redirect(CLIENT_URL);
+    res.redirect('http://localhost:5173');
   });
 });
 router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
@@ -32,7 +32,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     successRedirect: CLIENT_URL,
-    failureRedirect: "http://localhost:5173",
+    failureRedirect: "/auth/login/failed",
   })
 );
 
