@@ -56,14 +56,17 @@ const hash = crypto.createHmac("sha256", salt, salt2, salt3);
 hash.update(secret);
 const hashedSecret = hash.digest("hex");
 
-app.set("trust proxy", 1);
 app.use(
   session({
     secret: hashedSecret,
     resave: false,
-    proxy: true,
     saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 },
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+    },
   })
 );
 
