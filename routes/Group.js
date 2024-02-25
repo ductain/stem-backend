@@ -57,7 +57,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /group:
+ * /groups:
  *   get:
  *     summary: Returns the list of all the Groups
  *     tags: [Groups]
@@ -76,7 +76,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /group/{Id}:
+ * /groups/{Id}:
  *   get:
  *     summary: Get the Group by Group code
  *     tags: [Groups]
@@ -102,7 +102,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /group/count/countByProgram:
+ * /groups/count/count-by-program:
  *   get:
  *     summary: Get the count of groups in a program
  *     tags: [Groups]
@@ -127,6 +127,6 @@ const router = express.Router();
 
 router.get("/", getGroups);
 router.get("/:Id", getGroupById);
-router.get('/count/countByProgram', countGroupsInProgram)
+router.get('/count/count-by-program', countGroupsInProgram)
 
 module.exports = router;

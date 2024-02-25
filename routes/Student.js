@@ -50,7 +50,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /student:
+ * /students:
  *   get:
  *     summary: Returns the list of all the Students
  *     tags: [Students]
@@ -69,7 +69,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /student/{StudentCode}:
+ * /students/{StudentCode}:
  *   get:
  *     summary: Get the Student by student code
  *     tags: [Students]

@@ -53,7 +53,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /program:
+ * /programs:
  *   get:
  *     summary: Returns the list of all the programs
  *     tags: [Programs]
@@ -72,7 +72,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /program/{Id}:
+ * /programs/{Id}:
  *   get:
  *     summary: Get the program by id
  *     tags: [Programs]

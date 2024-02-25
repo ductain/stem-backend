@@ -34,7 +34,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /tutorial:
+ * /tutorials:
  *   get:
  *     summary: Returns the list of all the Tutorials
  *     tags: [Tutorials]
@@ -53,7 +53,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /tutorial/{Id}:
+ * /tutorials/{Id}:
  *   get:
  *     summary: Get the Tutorial by id
  *     tags: [Tutorials]

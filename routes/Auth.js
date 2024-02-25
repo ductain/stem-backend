@@ -1,15 +1,18 @@
 const router = require("express").Router();
 const passport = require("passport");
-// const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:3000/";
+const jwt = require('jsonwebtoken')
+const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:5173/student";
+const HOME_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:5173";
 
-const CLIENT_URL = "http://localhost:5173/student"
+// const CLIENT_URL = "http://localhost:5173/student"
 
 router.get("/login/success", (req, res) => {
   if (req.user) {
+    const token = jwt.sign({ user: req.user }, 'rommel');
     res.status(200).json({
       success: true,
       message: "successfull",
-      user: req.user,
+      token: token
     });
   }
 });
@@ -24,10 +27,10 @@ router.get("/logout", (req, res) => {
     if (err) {
       return next(err);
     }
-    res.redirect('http://localhost:5173');
+    res.redirect(HOME_URL);
   });
 });
-router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get(
   "/google/callback",
   passport.authenticate("google", {

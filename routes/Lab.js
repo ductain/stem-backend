@@ -53,7 +53,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /lab:
+ * /labs:
  *   get:
  *     summary: Returns the list of all the Labs
  *     tags: [Labs]
@@ -72,7 +72,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /lab/{Id}:
+ * /labs/{Id}:
  *   get:
  *     summary: Get the Lab by id
  *     tags: [Labs]

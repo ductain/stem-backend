@@ -47,7 +47,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teacher:
+ * /teachers:
  *   get:
  *     summary: Returns the list of all the Teachers
  *     tags: [Teachers]
@@ -66,7 +66,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teacher/{Id}:
+ * /teachers/{Id}:
  *   get:
  *     summary: Get the teacher by teacher id
  *     tags: [Teachers]

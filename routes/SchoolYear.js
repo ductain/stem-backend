@@ -30,7 +30,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schoolYear:
+ * /school-year:
  *   get:
  *     summary: Returns the list of all the SchoolYears
  *     tags: [SchoolYears]
@@ -49,7 +49,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schoolYear/{Id}:
+ * /school-year/{Id}:
  *   get:
  *     summary: Get the SchoolYear by id
  *     tags: [SchoolYears]

@@ -7,7 +7,7 @@ const cors = require("cors");
 const port = process.env.PORT || 5000;
 const passport = require("passport");
 const passportSetup = require("./passport");
-const MemoryStore = require('memorystore')(session)
+const MemoryStore = require("memorystore")(session);
 
 const CSS_URL =
   " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
@@ -21,10 +21,10 @@ const options = {
     },
     servers: [
       {
-        url: "https://stem-backend.vercel.app/",
+        url: "https://stem-backend.vercel.app/api/v1",
       },
       {
-        url: "http://localhost:5000",
+        url: "http://localhost:5000/api/v1",
       },
     ],
   },
@@ -42,9 +42,9 @@ app.use(
 app.use(
   cors({
     origin: "http://localhost:5173",
-    // credentials: true,
-    // optionsSuccessStatus: 200,
-    // methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: "GET,POST,PUT,DELETE",
   })
 );
 
@@ -59,9 +59,9 @@ const hashedSecret = hash.digest("hex");
 
 app.use(
   session({
-	store: new MemoryStore({
-		checkPeriod: 24 * 60 * 60 * 1000
-	}),
+    store: new MemoryStore({
+      checkPeriod: 24 * 60 * 60 * 1000,
+    }),
     secret: hashedSecret,
     resave: false,
     saveUninitialized: true,
@@ -86,17 +86,17 @@ const labRoute = require("./routes/Lab");
 const tutorialRoute = require("./routes/Tutorial");
 const groupRoute = require("./routes/Group");
 app.use(express.json());
-app.use("/auth", authRoute);
-app.use("/province", provinceRoute);
-app.use("/school", schoolRoute);
-app.use("/student", studentRoute);
-app.use("/teacher", teacherRoute);
-app.use("/schoolYear", schoolYearRoute);
-app.use("/news", newsRoute);
-app.use("/program", programRoute);
-app.use("/lab", labRoute);
-app.use("/tutorial", tutorialRoute);
-app.use("/group", groupRoute);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/provinces", provinceRoute);
+app.use("/api/v1/schools", schoolRoute);
+app.use("/api/v1/students", studentRoute);
+app.use("/api/v1/teachers", teacherRoute);
+app.use("/api/v1/school-year", schoolYearRoute);
+app.use("/api/v1/news", newsRoute);
+app.use("/api/v1/programs", programRoute);
+app.use("/api/v1/labs", labRoute);
+app.use("/api/v1/tutorials", tutorialRoute);
+app.use("/api/v1/groups", groupRoute);
 app.listen(port, () => {
   console.log(`Backend is running at port ${port}`);
 });

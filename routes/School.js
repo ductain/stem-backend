@@ -40,7 +40,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school:
+ * /schools:
  *   get:
  *     summary: Returns the list of all the Schools
  *     tags: [Schools]
@@ -59,7 +59,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school/{Id}:
+ * /schools/{Id}:
  *   get:
  *     summary: Get the School by id
  *     tags: [Schools]

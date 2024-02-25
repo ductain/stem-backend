@@ -28,7 +28,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /province:
+ * /provinces:
  *   get:
  *     summary: Returns the list of all the provinces
  *     tags: [Provinces]
@@ -47,7 +47,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /province/{Id}:
+ * /provinces/{Id}:
  *   get:
  *     summary: Get the province by id
  *     tags: [Provinces]
@@ -73,7 +73,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /province:
+ * /provinces:
  *   post:
  *     summary: Create a new province
  *     tags: [Provinces]
@@ -96,7 +96,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /province/{Id}:
+ * /provinces/{Id}:
  *  put:
  *    summary: Update the province by the id
  *    tags: [Provinces]
@@ -128,7 +128,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /province/{Id}:
+ * /provinces/{Id}:
  *  delete:
  *    summary: Delete the province by the id
  *    tags: [Provinces]
