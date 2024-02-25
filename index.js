@@ -64,20 +64,12 @@ app.use(
 	}),
     secret: hashedSecret,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
-
-// app.use(
-//   session({
-//     name: "session",
-//     keys: ["key1"],
-//     maxAge: 24 * 60 * 60 * 1000,
-//   })
-// );
 
 app.use(passport.initialize());
 app.use(passport.session());
