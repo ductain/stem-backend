@@ -7,7 +7,6 @@ const cors = require("cors");
 const port = process.env.PORT || 5000;
 const passport = require("passport");
 const passportSetup = require("./passport");
-const MemoryStore = require("memorystore")(session);
 const cookieParser = require('cookie-parser')
 const CSS_URL =
   " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
@@ -48,21 +47,11 @@ app.use(
   })
 );
 
-const crypto = require("crypto");
-const secret = crypto.randomBytes(32).toString("hex");
-const salt = crypto.randomBytes(32).toString("hex");
-const salt2 = crypto.randomBytes(16).toString("hex");
-const salt3 = crypto.randomBytes(16).toString("hex");
-const hash = crypto.createHmac("sha256", salt, salt2, salt3);
-hash.update(secret);
-const hashedSecret = hash.digest("hex");
+app.use(cookieParser())
 
 app.use(
   session({
-    store: new MemoryStore({
-      checkPeriod: 24 * 60 * 60 * 1000,
-    }),
-    secret: hashedSecret,
+    secret: 'fakwfnwjan',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -71,7 +60,7 @@ app.use(
   })
 );
 
-app.use(cookieParser())
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -87,6 +76,8 @@ const programRoute = require("./routes/Program");
 const labRoute = require("./routes/Lab");
 const tutorialRoute = require("./routes/Tutorial");
 const groupRoute = require("./routes/Group");
+const teamRoute = require("./routes/Team");
+const memberRoute = require("./routes/Member");
 app.use(express.json());
 app.use("/auth", authRoute);
 app.use("/api/v1/provinces", provinceRoute);
@@ -99,6 +90,8 @@ app.use("/api/v1/programs", programRoute);
 app.use("/api/v1/labs", labRoute);
 app.use("/api/v1/tutorials", tutorialRoute);
 app.use("/api/v1/groups", groupRoute);
+app.use("/api/v1/teams", teamRoute);
+app.use("/api/v1/members", memberRoute);
 app.listen(port, () => {
   console.log(`Backend is running at port ${port}`);
 });
