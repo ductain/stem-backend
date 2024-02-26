@@ -73,6 +73,83 @@ const express = require("express");
  *       500:
  *         description: Internal Server Error 
  */
+
+/**
+ * @swagger
+ * /news:
+ *   post:
+ *     summary: Create a new
+ *     tags: [News]
+ *     requestBody:
+ *      required: true
+ *      description: Input name
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      Name:
+ *                          type: string
+ *     responses:
+ *       200:
+ *         description: Province created successfully
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
+ * /news/{Id}:
+ *  put:
+ *    summary: Update the news by the id
+ *    tags: [News]
+ *    parameters:
+ *      - in: path
+ *        name: Id
+ *        schema:
+ *          type: string
+ *          required: true
+ *          description: The province id
+ *    requestBody:
+ *      required: true
+ *      description: Update province name
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              Name:
+ *                  type: string
+ *    responses:
+ *      200:
+ *        description: Province updated successfully
+ *      404:
+ *        description: Province not found
+ *      500:
+ *        description: Internal Server Error
+ */
+
+/**
+ * @swagger
+ * /news/{Id}:
+ *  delete:
+ *    summary: Delete the news by the id
+ *    tags: [News]
+ *    parameters:
+ *      - in: path
+ *        name: Id
+ *        schema:
+ *          type: string
+ *          required: true
+ *          description: The province id
+ *    responses:
+ *      200:
+ *        description: Province deleted successfully
+ *      404:
+ *        description: Province not found
+ *      500:
+ *        description: Internal Server Error
+ */
 const router = express.Router();
 
 router.get("/", getNews);

@@ -1,18 +1,20 @@
 const router = require("express").Router();
 const passport = require("passport");
 const jwt = require('jsonwebtoken')
-const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:5173/student";
-const HOME_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:5173";
+// const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/student" : "http://localhost:5173/student";
+// const HOME_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:5173";
 
-// const CLIENT_URL = "http://localhost:5173/student"
+const CLIENT_URL = "http://localhost:5173/student"
+const HOME_URL = "http://localhost:5173"
 
 router.get("/login/success", (req, res) => {
-  if (req.user) {
+  if (req?.user) {
     const token = jwt.sign({ user: req.user }, 'rommel');
+    res.cookie('token', token, { httpOnly: true });
     res.status(200).json({
       success: true,
       message: "successfull",
-      token: token
+      user: req?.user,
     });
   }
 });

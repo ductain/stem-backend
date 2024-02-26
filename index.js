@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 const passport = require("passport");
 const passportSetup = require("./passport");
 const MemoryStore = require("memorystore")(session);
-
+const cookieParser = require('cookie-parser')
 const CSS_URL =
   " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 const options = {
@@ -71,6 +71,8 @@ app.use(
   })
 );
 
+app.use(cookieParser())
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -86,7 +88,7 @@ const labRoute = require("./routes/Lab");
 const tutorialRoute = require("./routes/Tutorial");
 const groupRoute = require("./routes/Group");
 app.use(express.json());
-app.use("/api/v1/auth", authRoute);
+app.use("/auth", authRoute);
 app.use("/api/v1/provinces", provinceRoute);
 app.use("/api/v1/schools", schoolRoute);
 app.use("/api/v1/students", studentRoute);
