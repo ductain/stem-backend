@@ -40,7 +40,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://stem-dun.vercel.app"],
     credentials: true,
     optionsSuccessStatus: 200,
     methods: "GET,POST,PUT,DELETE",
@@ -57,10 +57,7 @@ app.use(
     cookie: {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
-      sameSite: 'true',
-      secure: process.env.NODE_RNV === 'production'
     },
-    proxy: true
   })
 );
 
