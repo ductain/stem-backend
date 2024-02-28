@@ -40,7 +40,7 @@ app.use(
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://stem-dun.vercel.app"],
+    origin: "http://localhost:5173",
     credentials: true,
     optionsSuccessStatus: 200,
     methods: "GET,POST,PUT,DELETE",
