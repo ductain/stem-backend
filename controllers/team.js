@@ -5,7 +5,7 @@ const getAllTeamsInGroup = async (req, res) => {
   try {
     const pool = await sql.connect(config);
     // Check if GroupId exists in Group table
-    const groupQuery = "SELECT * FROM [Group] WHERE Id = @GroupId";
+    const groupQuery = "SELECT * FROM [Group] WHERE Id = @GroupId AND Status = 1";
     const groupResult = await pool
       .request()
       .input("GroupId", sql.Int, req.query.GroupId)

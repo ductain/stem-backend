@@ -1,4 +1,4 @@
-const { getPrograms, getProgramById } = require("../controllers/program");
+const { getPrograms, getProgramById, createProgram, updateProgram, deleteProgram } = require("../controllers/program");
 const express = require("express");
 
 /**
@@ -98,13 +98,20 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs:
+ * /programs/create:
  *   post:
  *     summary: Create a new program
  *     tags: [Programs]
+ *     parameters:
+ *       - in: query
+ *         name: SchoolYearId
+ *         description: ID of the school year
+ *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *      required: true
- *      description: Input name
+ *      description: Input name, description and image
  *      content:
  *          application/json:
  *              schema:
@@ -112,9 +119,15 @@ const express = require("express");
  *                  properties:
  *                      Name:
  *                          type: string
+ *                      Description:
+ *                          type: string
+ *                      Image:
+ *                          type: string
  *     responses:
  *       200:
- *         description: Province created successfully
+ *         description: Program created successfully
+ *       404:
+ *         description: School year not found
  *       500:
  *         description: Internal Server Error 
  */
@@ -130,11 +143,11 @@ const express = require("express");
  *        name: Id
  *        schema:
  *          type: string
- *          required: true
- *          description: The province id
+ *        required: true
+ *        description: The program id
  *    requestBody:
  *      required: true
- *      description: Update province name
+ *      description: Update name, description and image
  *      content:
  *        application/json:
  *          schema:
@@ -142,11 +155,15 @@ const express = require("express");
  *            properties:
  *              Name:
  *                  type: string
+ *              Description:
+ *                  type: string
+ *              Image:
+ *                  type: string
  *    responses:
  *      200:
- *        description: Province updated successfully
+ *        description: Program updated successfully
  *      404:
- *        description: Province not found
+ *        description: Program not found
  *      500:
  *        description: Internal Server Error
  */
@@ -162,19 +179,22 @@ const express = require("express");
  *        name: Id
  *        schema:
  *          type: string
- *          required: true
- *          description: The province id
+ *        required: true
+ *        description: The program id
  *    responses:
  *      200:
- *        description: Province deleted successfully
+ *        description: Program deleted successfully
  *      404:
- *        description: Province not found
+ *        description: Program not found
  *      500:
- *        description: Internal Server Error
+ *        description: Program Server Error
  */
 const router = express.Router();
 
 router.get("/", getPrograms);
 router.get("/:Id", getProgramById);
+router.post("/create", createProgram);
+router.put("/:Id", updateProgram);
+router.delete("/:Id", deleteProgram);
 
 module.exports = router;

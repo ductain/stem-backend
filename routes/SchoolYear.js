@@ -1,4 +1,4 @@
-const { getSchoolYear, getSchoolYearById } = require("../controllers/schoolYear");
+const { getSchoolYear, getSchoolYearById, createSchoolYear, updateSchoolYear, deleteSchoolYear } = require("../controllers/schoolYear");
 const express = require("express");
 
 /**
@@ -81,17 +81,18 @@ const express = require("express");
  *     tags: [SchoolYears]
  *     requestBody:
  *      required: true
- *      description: Input name
+ *      description: Input start date
  *      content:
  *          application/json:
  *              schema:
  *                  type: object
  *                  properties:
- *                      Name:
+ *                      StartDate:
  *                          type: string
+ *                          format: date-time
  *     responses:
  *       200:
- *         description: Province created successfully
+ *         description: School year created successfully
  *       500:
  *         description: Internal Server Error 
  */
@@ -108,22 +109,23 @@ const express = require("express");
  *        schema:
  *          type: string
  *          required: true
- *          description: The province id
+ *          description: The school year id
  *    requestBody:
  *      required: true
- *      description: Update province name
+ *      description: Update start date
  *      content:
  *        application/json:
  *          schema:
  *            type: object
  *            properties:
- *              Name:
+ *              StartDate:
  *                  type: string
+ *                  format: date-time
  *    responses:
  *      200:
- *        description: Province updated successfully
+ *        description: School year updated successfully
  *      404:
- *        description: Province not found
+ *        description: School year not found
  *      500:
  *        description: Internal Server Error
  */
@@ -140,12 +142,12 @@ const express = require("express");
  *        schema:
  *          type: string
  *          required: true
- *          description: The province id
+ *          description: The school year id
  *    responses:
  *      200:
- *        description: Province deleted successfully
+ *        description: School year deleted successfully
  *      404:
- *        description: Province not found
+ *        description: School year not found
  *      500:
  *        description: Internal Server Error
  */
@@ -153,5 +155,8 @@ const router = express.Router();
 
 router.get("/", getSchoolYear);
 router.get("/:Id", getSchoolYearById);
+router.post("/", createSchoolYear);
+router.put("/:Id", updateSchoolYear);
+router.delete("/:Id", deleteSchoolYear);
 
 module.exports = router;
