@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const cookie = require('cookie')
 
 const loginSuccess = (req, res) => {
   // if (req.user) {
@@ -11,7 +12,9 @@ const loginSuccess = (req, res) => {
   //   });
   // }
   // Retrieve the JWT token from the cookie
-  const token = req.cookies.token;
+  const cookies = req.headers.cookie;
+  const parsedCookies = cookie.parse(cookies || "");
+  const token = parsedCookies.token;
 
   if (token) {
     try {

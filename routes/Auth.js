@@ -27,6 +27,8 @@ router.get("/google/callback", (req, res, next) => {
     // Set the JWT token as a cookie
     res.cookie("token", token, {
       httpOnly: true, // Make the cookie accessible only via HTTP(S)
+      path: "/",
+      maxAge: 24 * 60 * 60 * 1000,
       // Other cookie options (e.g., secure, maxAge, etc.) can be added here
     });
 
