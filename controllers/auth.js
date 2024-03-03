@@ -52,6 +52,12 @@ const loginFailed = (req, res) => {
 };
 
 const logout = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    path: '/',
+    sameSite: 'none',
+    secure: true
+  });
   req.logout(function (err) {
     if (err) {
       return next(err);
