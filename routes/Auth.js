@@ -31,7 +31,7 @@ router.get("/google/callback", (req, res, next) => {
       sameSite: 'none',
       secure: true,
       maxAge: 24 * 60 * 60 * 1000,
-      domain: 'stem-backend.vercel.app'
+      domain: 'https://stem-backend.vercel.app'
     });
 
     // Redirect to the desired page
