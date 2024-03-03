@@ -29,6 +29,7 @@ router.get("/google/callback", (req, res, next) => {
       httpOnly: true, // Make the cookie accessible only via HTTP(S)
       path: "/",
       sameSite: 'none',
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
 
