@@ -27,6 +27,23 @@ router.get("/google/callback", (req, res, next) => {
       res.redirect("/auth/login/failed");
     }
 
+    let redirectURL = '';
+    if (user.role === 'Teacher') {
+      redirectURL = 'http://localhost:5000/teacher';
+    } 
+    else if (user.role === 'Student') {
+      redirectURL = 'http://localhost:5000/student';
+    }
+    else if (user.role === 'School Admin') {
+      redirectURL = 'http://localhost:5000/school-admin';
+    }
+    else if (user.role === 'System Admin') {
+      redirectURL = 'http://localhost:5000/system-admin';
+    }
+    else {
+      redirectURL = 'http://localhost:5000/manager';
+    }
+
     // Set the JWT token as a cookie
     res.cookie("token", token, {
       httpOnly: true, // Make the cookie accessible only via HTTP(S)
@@ -37,7 +54,7 @@ router.get("/google/callback", (req, res, next) => {
     });
 
     // Redirect to the desired page
-    res.redirect(CLIENT_URL);
+    res.redirect(redirectURL);
   })(req, res, next);
 });
 
