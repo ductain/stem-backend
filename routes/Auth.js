@@ -29,8 +29,6 @@ router.get("/google/callback", (req, res, next) => {
       httpOnly: true, // Make the cookie accessible only via HTTP(S)
       path: "/",
       maxAge: 24 * 60 * 60 * 1000,
-      domain: process.env.NODE_ENV === 'development' ? 'localhost' : 'stem-backend.vercel.app' 
-      // Other cookie options (e.g., secure, maxAge, etc.) can be added here
     });
 
     // Redirect to the desired page
