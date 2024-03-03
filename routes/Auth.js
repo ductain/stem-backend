@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { loginSuccess, loginFailed, logout } = require("../controllers/auth");
+const jwt = require('jsonwebtoken');
+
 // const CLIENT_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/student" : "http://localhost:5173/student";
 // const HOME_URL = process.env.NODE_ENV === "production" ? "https://stem-dun.vercel.app/" : "http://localhost:5173";
 
@@ -26,22 +28,24 @@ router.get("/google/callback", (req, res, next) => {
     if (err) {
       res.redirect("/auth/login/failed");
     }
+    const decoded = jwt.verify(token, 'rommel');
+    const userInfo = decoded.user
 
     let redirectURL = '';
-    if (user.role === 'Teacher') {
-      redirectURL = 'http://localhost:5000/teacher';
+    if (userInfo.Role === 'Teacher') {
+      redirectURL = 'http://localhost:5173/teacher';
     } 
-    else if (user.role === 'Student') {
-      redirectURL = 'http://localhost:5000/student';
+    else if (userInfo.Role === 'Student') {
+      redirectURL = 'http://localhost:5173/student';
     }
-    else if (user.role === 'School Admin') {
-      redirectURL = 'http://localhost:5000/school-admin';
+    else if (userInfo.Role === 'School Admin') {
+      redirectURL = 'http://localhost:5173/school-admin';
     }
-    else if (user.role === 'System Admin') {
-      redirectURL = 'http://localhost:5000/system-admin';
+    else if (userInfo.Role === 'System Admin') {
+      redirectURL = 'http://localhost:5173/system-admin';
     }
     else {
-      redirectURL = 'http://localhost:5000/manager';
+      redirectURL = 'http://localhost:5173/manager';
     }
 
     // Set the JWT token as a cookie

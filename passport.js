@@ -17,16 +17,16 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       const { id, displayName, emails, photos } = profile;
       const user = {
-        googleId: id,
-        name: displayName,
-        email: emails[0].value,
-        avatar: photos[0].value,
-        role: "Student",
+        GoogleId: id,
+        Name: displayName,
+        Email: emails[0].value,
+        Avatar: photos[0].value,
+        Role: "Student",
       };
 
       // Check if the user already exists in the database
       const query = "SELECT * FROM Account WHERE GoogleId = @googleId";
-      const parameters = { googleId: user.googleId };
+      const parameters = { GoogleId: user.GoogleId };
 
       await sql.connect(config, (err) => {
         if (err) {
@@ -34,7 +34,7 @@ passport.use(
         }
 
         const request = new sql.Request();
-        request.input("googleId", sql.NVarChar, user.googleId);
+        request.input("googleId", sql.NVarChar, user.GoogleId);
         request.query(query, (error, results) => {
           if (error) {
             return done(error);
@@ -50,10 +50,10 @@ passport.use(
             // User doesn't exist, insert a new row into the Account table
             const insertQuery =
               "INSERT INTO Account (GoogleId, Name, Email, Avatar, Role) VALUES (@googleId, @name, @email, @avatar, @role)";
-            request.input("name", sql.NVarChar, user.name);
-            request.input("email", sql.NVarChar, user.email);
-            request.input("avatar", sql.NVarChar, user.avatar);
-            request.input("role", sql.NVarChar, user.role);
+            request.input("name", sql.NVarChar, user.Name);
+            request.input("email", sql.NVarChar, user.Email);
+            request.input("avatar", sql.NVarChar, user.Avatar);
+            request.input("role", sql.NVarChar, user.Role);
             request.query(insertQuery, (error) => {
               if (error) {
                 return done(error);
