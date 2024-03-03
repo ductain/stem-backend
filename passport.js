@@ -5,6 +5,7 @@ const config = require("./dbConfig");
 const GOOGLE_CLIENT_ID =
   "1065655178044-qk5gjsoqt5lsd02ec8c7d41hd32ccvj4.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = "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";
+const jwt = require('jsonwebtoken');
 
 passport.use(
   new GoogleStrategy(
@@ -42,7 +43,9 @@ passport.use(
           if (results.recordset.length > 0) {
             // User already exists, return the user information
             const existingUser = results.recordset[0];
-            done(null, existingUser);
+            const token = jwt.sign({ user: existingUser }, 'rommel');
+            done(null, {existingUser, token});
+            // done(null, existingUser);
           } else {
             // User doesn't exist, insert a new row into the Account table
             const insertQuery =
@@ -55,7 +58,9 @@ passport.use(
               if (error) {
                 return done(error);
               }
-              done(null, user);
+              // done(null, user);
+              const token = jwt.sign({ user }, 'rommel');
+              done(null, {user, token});
             });
           }
         });
