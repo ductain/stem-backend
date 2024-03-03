@@ -27,7 +27,7 @@ const loginSuccess = (req, res) => {
       res.status(200).json({
         success: true,
         message: "Login successful",
-        user: user,
+        user: user.user,
       });
     } catch (error) {
       // Handle token verification error
