@@ -1,5 +1,5 @@
 const express = require("express");
-const { getMembersInGroup } = require("../controllers/member");
+const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/member");
 
 
 /**
@@ -67,8 +67,50 @@ const { getMembersInGroup } = require("../controllers/member");
  *       500:
  *         description: Internal Server Error 
  */
+
+/**
+ * @swagger
+ * /members/programs-of-a-member:
+ *   get:
+ *     summary: Get all program in a member
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: StudentId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: id of the student
+ *     responses:
+ *       200:
+ *         description: get all program of a member
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               type: object
+ *               properties:
+ *                      Id:
+ *                          type: number
+ *                      StudentId:
+ *                          type: number
+ *                      ClassCode:
+ *                          type: string
+ *                      FullName:
+ *                          type: string
+ *                      ProgramId:
+ *                          type: number
+ *                      Code:
+ *                          type: string
+ *                      Name:
+ *                          type: string
+ *       404:
+ *         description: Member not found
+ *       500:
+ *         description: Internal Server Error 
+ */
 const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
+router.get("/programs-of-a-member", getProgramsOfAMember);
 
 module.exports = router;

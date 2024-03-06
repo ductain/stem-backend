@@ -2,11 +2,47 @@ const sql = require("mssql");
 const config = require("../dbConfig");
 
 const getProvinces = async (req, res) => {
+  // try {
+  //   const pool = await sql.connect(config);
+  //   const provinces = await pool
+  //     .request()
+  //     .query("SELECT Id, Code, Name FROM Province WHERE Status = 1");
+  //   res.status(200).json(provinces.recordset);
+  // } catch (error) {
+  //   res.status(500).json(error);
+  // }
   try {
+    const { search, page, limit, sortField, sortOrder } = req.query;
+
+    // Building the SQL query
+    let query = "SELECT Id, Code, Name FROM Province WHERE Status = 1";
+
+    // Adding search filter
+    if (search) {
+      query += ` AND Name LIKE '%${search}%'`;
+    }
+
+    // Adding sorting
+    if (sortField && sortOrder) {
+      const validSortFields = ["Id", "Code", "Name"];
+      const validSortOrders = ["asc", "desc"];
+      if (
+        validSortFields.includes(sortField) &&
+        validSortOrders.includes(sortOrder)
+      ) {
+        query += ` ORDER BY ${sortField} ${sortOrder}`;
+      }
+    }
+
+    // Adding paging
+    if (page && limit) {
+      const offset = (page - 1) * limit;
+      query += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
+    }
+
     const pool = await sql.connect(config);
-    const provinces = await pool
-      .request()
-      .query("SELECT Id, Code, Name FROM Province WHERE Status = 1");
+    const provinces = await pool.request().query(query);
+
     res.status(200).json(provinces.recordset);
   } catch (error) {
     res.status(500).json(error);
