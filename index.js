@@ -9,7 +9,7 @@ const passport = require("passport");
 const passportSetup = require("./passport");
 const cookieParser = require('cookie-parser')
 const CSS_URL =
-  " https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.11.9/swagger-ui.min.css";
 const options = {
   definition: {
     openapi: "3.0.0",
