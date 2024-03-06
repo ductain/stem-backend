@@ -70,7 +70,7 @@ const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/memb
 
 /**
  * @swagger
- * /members/programs-of-a-member:
+ * /members/programs-of-a-student:
  *   get:
  *     summary: Get all program in a member
  *     tags: [Members]
@@ -103,6 +103,16 @@ const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/memb
  *                          type: string
  *                      Name:
  *                          type: string
+ *                      CreatedDate:
+ *                          type: string
+ *                          format: date-time
+ *                      UpdatedDate:
+ *                          type: string
+ *                          format: date-time
+ *                      Description:
+ *                          type: string
+ *                      Image:
+ *                          type: string
  *       404:
  *         description: Member not found
  *       500:
@@ -111,6 +121,6 @@ const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/memb
 const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
-router.get("/programs-of-a-member", getProgramsOfAMember);
+router.get("/programs-of-a-student", getProgramsOfAMember);
 
 module.exports = router;
