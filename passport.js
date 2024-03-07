@@ -13,7 +13,6 @@ passport.use(
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
-      passReqToCallback: true,
       prompt: 'select_account'
     },
     async (accessToken, refreshToken, profile, done) => {
