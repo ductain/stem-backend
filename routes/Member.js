@@ -99,9 +99,9 @@ const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/memb
  *                          type: string
  *                      ProgramId:
  *                          type: number
- *                      Code:
+ *                      ProgramCode:
  *                          type: string
- *                      Name:
+ *                      ProgramName:
  *                          type: string
  *                      CreatedDate:
  *                          type: string
@@ -112,6 +112,12 @@ const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/memb
  *                      Description:
  *                          type: string
  *                      Image:
+ *                          type: string
+ *                      GroupId:
+ *                          type: number
+ *                      GroupCode:
+ *                          type: string
+ *                      GroupName:
  *                          type: string
  *       404:
  *         description: Member not found
