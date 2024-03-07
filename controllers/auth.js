@@ -58,12 +58,13 @@ const logout = (req, res) => {
     sameSite: 'none',
     secure: true
   });
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("http://localhost:5173");
-  });
+  // req.logout(function (err) {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   res.redirect("http://localhost:5173");
+  // });
+  res.redirect("http://localhost:5173");
 };
 
 module.exports = {
