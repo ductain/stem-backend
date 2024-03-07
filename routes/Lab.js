@@ -1,4 +1,4 @@
-const { getLabs, getLabById } = require("../controllers/lab");
+const { getLabs, getLabById, getLabByProgramId } = require("../controllers/lab");
 const express = require("express");
 
 /**
@@ -68,6 +68,32 @@ const express = require("express");
  *                 $ref: '#/components/schemas/Lab'
  *       500:
  *          description: Internal Server Error
+ */
+
+/**
+ * @swagger
+ * /labs/lab-list/labs-in-program:
+ *   get:
+ *     summary: Get all Labs by program id
+ *     tags: [Labs]
+ *     parameters:
+ *       - in: query
+ *         name: ProgramId
+ *         description: Id of the program
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: get all labs by program id
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               $ref: '#/components/schemas/Lab'
+ *       404:
+ *         description: Lab not found
+ *       500:
+ *         description: Internal Server Error 
  */
 
 /**
@@ -176,5 +202,6 @@ const router = express.Router();
 
 router.get("/", getLabs);
 router.get("/:Id", getLabById);
+router.get("/lab-list/labs-in-program", getLabByProgramId);
 
 module.exports = router;
