@@ -1,4 +1,4 @@
-const { getStudents, getStudentByStudentCode } = require("../controllers/student");
+const { getStudents, getStudentByStudentCode, getStudentByEmail } = require("../controllers/student");
 const express = require("express");
 
 /**
@@ -95,6 +95,32 @@ const express = require("express");
 
 /**
  * @swagger
+ * /students/student-profile/student-by-email:
+ *   get:
+ *     summary: Get the Student by email
+ *     tags: [Students]
+ *     parameters:
+ *       - in: query
+ *         name: Email
+ *         description: email of the student
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The student info by student email
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               $ref: '#/components/schemas/Student'
+ *       404:
+ *         description: Student not found
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /students:
  *   post:
  *     summary: Create a new student
@@ -148,6 +174,7 @@ const express = require("express");
  *        description: Internal Server Error
  */
 
+
 /**
  * @swagger
  * /students/{Id}:
@@ -173,5 +200,6 @@ const router = express.Router();
 
 router.get("/", getStudents);
 router.get("/:StudentCode", getStudentByStudentCode);
+router.get("/student-profile/student-by-email", getStudentByEmail);
 
 module.exports = router;
