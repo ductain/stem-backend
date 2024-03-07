@@ -49,24 +49,24 @@ app.use(
 
 app.use(cookieParser())
 
-app.use(
-  session({
-    secret: 'fakwfnwjan',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      secure: true,
-      sameSite: 'none'
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: 'fakwfnwjan',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       httpOnly: true,
+//       maxAge: 24 * 60 * 60 * 1000,
+//       secure: true,
+//       sameSite: 'none'
+//     },
+//   })
+// );
 
 
 
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 
 const authRoute = require("./routes/Auth");
 const provinceRoute = require("./routes/Province");
