@@ -1,19 +1,7 @@
 const jwt = require("jsonwebtoken");
-
+const sql = require("mssql");
+const config = require("../dbConfig");
 const loginSuccess = (req, res) => {
-  // if (req.user) {
-  //   // const token = jwt.sign({ user: req.user }, "rommel");
-  //   // res.cookie("token", token, { httpOnly: true });
-  //   res.status(200).json({
-  //     success: true,
-  //     message: "successfull",
-  //     user: req.user,
-  //   });
-  // }
-  // Retrieve the JWT token from the cookie
-  // const cookies = req.headers.cookie;
-  // const parsedCookies = cookie.parse(cookies || "");
-  // const token = parsedCookies.token;
   const token = req.cookies.token;
 
   if (token) {
@@ -22,12 +10,42 @@ const loginSuccess = (req, res) => {
       const decoded = jwt.verify(token, 'rommel');
 
       // The user information is available in the decoded payload
-      const user = decoded;
+      const user = decoded.user;
 
-      res.status(200).json({
-        success: true,
-        message: "Login successful",
-        user: user.user,
+      // Query the student account based on the user's email
+      const query = "SELECT Id FROM Student WHERE Email = @email";
+      const parameters = { email: user.Email };
+
+      // Execute the SQL query to retrieve the userId
+      // Replace this part with your actual database query code
+      // For example, using the "mssql" library:
+      sql.connect(config, (err) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: "Database error",
+          });
+        }
+
+        const request = new sql.Request();
+        request.input("email", sql.NVarChar, user.Email);
+        request.query(query, (error, results) => {
+          if (error) {
+            return res.status(500).json({
+              success: false,
+              message: "Database error",
+            });
+          }
+
+          const userId = results.recordset[0];
+
+          res.status(200).json({
+            success: true,
+            message: "Login successful",
+            user: user,
+            userId: userId,
+          });
+        });
       });
     } catch (error) {
       // Handle token verification error
