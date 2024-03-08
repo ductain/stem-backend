@@ -37,7 +37,7 @@ const loginSuccess = (req, res) => {
             });
           }
 
-          const userId = results.recordset[0];
+          const userId = results.recordset[0].Id;
 
           res.status(200).json({
             success: true,
