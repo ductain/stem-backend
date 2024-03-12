@@ -13,39 +13,44 @@ const loginSuccess = (req, res) => {
       const user = decoded.user;
 
       // Query the student account based on the user's email
-      const query = "SELECT Id FROM Student WHERE Email = @email";
-      const parameters = { email: user.Email };
+      // const query = "SELECT Id FROM Student WHERE Email = @email";
+      // const parameters = { email: user.Email };
 
       // Execute the SQL query to retrieve the userId
       // Replace this part with your actual database query code
       // For example, using the "mssql" library:
-      sql.connect(config, (err) => {
-        if (err) {
-          return res.status(500).json({
-            success: false,
-            message: "Database error",
-          });
-        }
+      // sql.connect(config, (err) => {
+      //   if (err) {
+      //     return res.status(500).json({
+      //       success: false,
+      //       message: "Database error",
+      //     });
+      //   }
 
-        const request = new sql.Request();
-        request.input("email", sql.NVarChar, user.Email);
-        request.query(query, (error, results) => {
-          if (error) {
-            return res.status(500).json({
-              success: false,
-              message: "Database error",
-            });
-          }
+      //   const request = new sql.Request();
+      //   request.input("email", sql.NVarChar, user.Email);
+      //   request.query(query, (error, results) => {
+      //     if (error) {
+      //       return res.status(500).json({
+      //         success: false,
+      //         message: "Database error",
+      //       });
+      //     }
 
-          const userId = results.recordset[0].Id;
+      //     const userId = results.recordset[0].Id;
 
-          res.status(200).json({
-            success: true,
-            message: "Login successful",
-            user: user,
-            userId: userId,
-          });
-        });
+      //     res.status(200).json({
+      //       success: true,
+      //       message: "Login successful",
+      //       user: user,
+      //       userId: userId,
+      //     });
+      //   });
+      // });
+      res.status(200).json({
+        success: true,
+        message: "Login successful",
+        user: user,
       });
     } catch (error) {
       // Handle token verification error
