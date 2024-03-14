@@ -32,14 +32,13 @@ const loginSuccess = (req, res) => {
           request.input("email", sql.NVarChar, user.Email);
           request.query(query, (error, results) => {
             if (error) {
-              return res.status(200).json({
-                success: true,
-                message: "Login successful",
-                user: user,
+              return res.status(500).json({
+                success: false,
+                message: "Database error",
               });
             }
 
-            const userId = results.recordset[0].Id;
+            const userId = results.recordset.length > 0 ? results.recordset[0].Id : null;
 
             res.status(200).json({
               success: true,
