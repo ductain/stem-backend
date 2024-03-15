@@ -1,4 +1,11 @@
-const { getLabs, getLabById, getLabByProgramId } = require("../controllers/lab");
+const {
+  getLabs,
+  getLabById,
+  getLabByProgramId,
+  createLab,
+  updateLab,
+  deleteLab,
+} = require("../controllers/lab");
 const express = require("express");
 
 /**
@@ -17,6 +24,9 @@ const express = require("express");
  *         Topic:
  *           type: string
  *           description: topic of the lab
+ *         Image:
+ *           type: string
+ *           description: image of the lab
  *         Description:
  *           type: string
  *           description: detail of the lab
@@ -88,12 +98,12 @@ const express = require("express");
  *         description: get all labs by program id
  *         content:
  *           application/json:
- *             schema:        
+ *             schema:
  *               $ref: '#/components/schemas/Lab'
  *       404:
  *         description: Lab not found
  *       500:
- *         description: Internal Server Error 
+ *         description: Internal Server Error
  */
 
 /**
@@ -114,12 +124,12 @@ const express = require("express");
  *         description: The Lab description by id
  *         content:
  *           application/json:
- *             schema:        
+ *             schema:
  *               $ref: '#/components/schemas/Lab'
  *       404:
  *         description: Lab not found
  *       500:
- *         description: Internal Server Error 
+ *         description: Internal Server Error
  */
 
 /**
@@ -128,19 +138,38 @@ const express = require("express");
  *   post:
  *     summary: Create a new lab
  *     tags: [Labs]
+ *     parameters:
+ *       - in: query
+ *         name: ProgramId
+ *         description: ID of the program that exist
+ *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *      required: true
- *      description: Input name
+ *      description: Input StartDate, EndDate, topic, description and image
  *      content:
  *          application/json:
  *              schema:
  *                  type: object
  *                  properties:
- *                      Name:
+ *                      StartDate:
+ *                          type: string
+ *                          format: date-time
+ *                      EndDate:
+ *                          type: string
+ *                          format: date-time
+ *                      Topic:
+ *                          type: string
+ *                      Description:
+ *                          type: string
+ *                      Image:
  *                          type: string
  *     responses:
  *       200:
- *         description: Province created successfully
+ *         description: Lab created successfully
+ *       404:
+ *         description: Lab not found
  *       500:
  *         description: Internal Server Error 
  */
@@ -156,23 +185,33 @@ const express = require("express");
  *        name: Id
  *        schema:
  *          type: string
- *          required: true
- *          description: The province id
+ *        required: true
+ *        description: The lab id
  *    requestBody:
  *      required: true
- *      description: Update province name
+ *      description: Update StartDate, EndDate, topic, description and image
  *      content:
  *        application/json:
  *          schema:
  *            type: object
  *            properties:
- *              Name:
+ *               StartDate:
+ *                  type: string
+ *                  format: date-time
+ *               EndDate:
+ *                  type: string
+ *                  format: date-time
+ *               Topic:
+ *                  type: string
+ *               Description:
+ *                  type: string
+ *               Image:
  *                  type: string
  *    responses:
  *      200:
- *        description: Province updated successfully
+ *        description: Lab updated successfully
  *      404:
- *        description: Province not found
+ *        description: Lab not found
  *      500:
  *        description: Internal Server Error
  */
@@ -189,12 +228,12 @@ const express = require("express");
  *        schema:
  *          type: string
  *          required: true
- *          description: The province id
+ *          description: The lab id
  *    responses:
  *      200:
- *        description: Province deleted successfully
+ *        description: Lab deleted successfully
  *      404:
- *        description: Province not found
+ *        description: Lab not found
  *      500:
  *        description: Internal Server Error
  */
@@ -203,5 +242,8 @@ const router = express.Router();
 router.get("/", getLabs);
 router.get("/:Id", getLabById);
 router.get("/lab-list/labs-in-program", getLabByProgramId);
+router.post("/", createLab);
+router.put("/:Id", updateLab);
+router.delete("/:Id", deleteLab);
 
 module.exports = router;

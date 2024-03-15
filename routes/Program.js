@@ -98,7 +98,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs/create:
+ * /programs:
  *   post:
  *     summary: Create a new program
  *     tags: [Programs]
@@ -193,7 +193,7 @@ const router = express.Router();
 
 router.get("/", getPrograms);
 router.get("/:Id", getProgramById);
-router.post("/create", createProgram);
+router.post("/", createProgram);
 router.put("/:Id", updateProgram);
 router.delete("/:Id", deleteProgram);
 

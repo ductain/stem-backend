@@ -7,7 +7,7 @@ const getLabs = async (req, res) => {
     const labs = await pool
       .request()
       .query(
-        "SELECT l.Id, l.Code, l.Topic, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.Status = 1 AND p.Status = 1"
+        "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.Status = 1 AND p.Status = 1"
       );
     res.status(200).json(labs.recordset);
   } catch (error) {
@@ -23,7 +23,7 @@ const getLabById = async (req, res) => {
       .request()
       .input("Id", sql.Int, labId)
       .query(
-        "SELECT l.Id, l.Code, l.Topic, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.Id = @Id AND l.Status = 1 AND p.Status = 1"
+        "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.Id = @Id AND l.Status = 1 AND p.Status = 1"
       );
     if (lab.recordset.length === 0) {
       res.status(404).json({ error: "Lab not found" });
@@ -103,8 +103,59 @@ const createLab = async (req, res) => {
   }
 };
 
+const updateLab = async (req, res) => {
+  const labId = req.params.Id;
+  const currentDate = new Date();
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("Id", sql.Int, labId)
+      .input("StartDate", sql.DateTime, req.body.StartDate)
+      .input("EndDate", sql.DateTime, req.body.EndDate)
+      .input("Topic", sql.NVarChar, req.body.Topic)
+      .input("Image", sql.NVarChar, req.body.Image)
+      .input("Description", sql.NVarChar, req.body.Description)
+      .input("UpdatedDate", sql.DateTime, currentDate)
+      .query(
+        "UPDATE Lab SET StartDate = @StartDate, EndDate = @EndDate, Topic = @Topic, Image = @Image, Description = @Description, UpdatedDate = @UpdatedDate WHERE Id = @Id AND Status = 1"
+      );
+    if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ error: "Lab not found" });
+    } else {
+      res.status(200).json({ message: "Lab updated successfully" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const deleteLab = async (req, res) => {
+  const labId = req.params.Id;
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("Id", sql.Int, labId)
+      .query("UPDATE Lab SET Status = 0 WHERE Id = @Id");
+
+    if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ error: "Lab not found" });
+    } else {
+      res.status(200).json({ message: "Lab deleted successfully" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getLabs: getLabs,
   getLabById: getLabById,
   getLabByProgramId: getLabByProgramId,
+  createLab: createLab,
+  updateLab: updateLab,
+  deleteLab: deleteLab,
 };
