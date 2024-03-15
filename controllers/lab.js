@@ -48,7 +48,7 @@ const getLabByProgramId = async (req, res) => {
     if (lab.recordset.length === 0) {
       res.status(404).json({ error: "Lab not found" });
     } else {
-      res.status(200).json(lab.recordset[0]);
+      res.status(200).json(lab.recordset);
     }
   } catch (error) {
     res.status(500).json(error);

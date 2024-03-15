@@ -1,5 +1,5 @@
 const express = require("express");
-const { getMembersInGroup, getProgramsOfAMember } = require("../controllers/member");
+const { getMembersInGroup, getProgramsOfAMember, createMember } = require("../controllers/member");
 
 
 /**
@@ -128,5 +128,6 @@ const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
 router.get("/programs-of-a-student", getProgramsOfAMember);
+// router.post("/", createMember);
 
 module.exports = router;
