@@ -103,6 +103,8 @@ const { getMembersInGroup, getProgramsOfAMember, createMember } = require("../co
  *                          type: string
  *                      ProgramName:
  *                          type: string
+ *                      SchoolYearId:
+ *                          type: number
  *                      CreatedDate:
  *                          type: string
  *                          format: date-time
@@ -124,10 +126,42 @@ const { getMembersInGroup, getProgramsOfAMember, createMember } = require("../co
  *       500:
  *         description: Internal Server Error 
  */
+
+/**
+ * @swagger
+ * /members:
+ *   post:
+ *     summary: Create a new member into program
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: ProgramId
+ *         description: ID of the program that exist
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *      required: true
+ *      description: Input student id
+ *      content:
+ *          application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      StudentId:
+ *                          type: number
+ *     responses:
+ *       200:
+ *         description: Member created successfully
+ *       404:
+ *         description: Member not found
+ *       500:
+ *         description: Internal Server Error 
+ */
 const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
 router.get("/programs-of-a-student", getProgramsOfAMember);
-// router.post("/", createMember);
+router.post("/", createMember);
 
 module.exports = router;

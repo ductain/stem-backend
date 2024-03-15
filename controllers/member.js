@@ -17,7 +17,7 @@ const getMembersInGroup = async (req, res) => {
       res.status(200).json(members.recordset);
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" })
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -29,7 +29,7 @@ const getProgramsOfAMember = async (req, res) => {
       .request()
       .input("StudentId", sql.Int, studentId)
       .query(
-        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName, pr.CreatedDate, pr.UpdatedDate, pr.Description, pr.Image, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName FROM Member AS m JOIN Program as pr ON m.ProgramId = pr.Id JOIN Student AS st on m.StudentId = st.Id JOIN [Group] AS gr on m.GroupId = gr.Id WHERE m.StudentId = @StudentId AND m.Status = 1 AND pr.Status = 1 AND st.Status = 1"
+        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName, pr.SchoolYearId, pr.CreatedDate, pr.UpdatedDate, pr.Description, pr.Image, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName FROM Member AS m JOIN Program as pr ON m.ProgramId = pr.Id JOIN Student AS st on m.StudentId = st.Id JOIN [Group] AS gr on m.GroupId = gr.Id WHERE m.StudentId = @StudentId AND m.Status = 1 AND pr.Status = 1 AND st.Status = 1"
       );
     if (members.recordset.length === 0) {
       res.status(404).json({ error: "Member not found" });
@@ -37,87 +37,77 @@ const getProgramsOfAMember = async (req, res) => {
       res.status(200).json(members.recordset);
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" })
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-const createMember = (req, res) => {
-  const { StudentId, ProgramId } = req.body;
+const createMember = async (req, res) => {
+  const StudentId = req.body.StudentId;
+  const ProgramId = req.query.ProgramId;
+  try {
+    const pool = await sql.connect(config);
+    const studentQuery =
+      "SELECT * FROM Student WHERE Id = @StudentId AND Status = 1";
+    const studentResult = await pool
+      .request()
+      .input("StudentId", sql.Int, StudentId)
+      .query(studentQuery);
 
-  // Query the SchoolId based on the StudentId
-  const schoolQuery = "SELECT SchoolId FROM Student WHERE StudentId = @StudentId";
-  const schoolParameters = { StudentId: StudentId };
+    if (studentResult.recordset.length === 0) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+    const schoolQuery =
+      "SELECT SchoolId FROM Student WHERE Id = @StudentId AND Status = 1";
+    const schoolResult = await pool
+      .request()
+      .input("StudentId", sql.Int, StudentId)
+      .query(schoolQuery);
 
-  // Query the GroupId based on the ProgramId
-  const groupQuery = "SELECT Id FROM [Group] WHERE ProgramId = @ProgramId";
-  const groupParameters = { ProgramId: ProgramId };
-
-  // Check if member already exists
-  const memberQuery = "SELECT * FROM Member WHERE StudentId = @StudentId";
-  const memberParameters = { StudentId: StudentId };
-
-  // Replace this part with your actual database query code
-  // For example, using the "mssql" library:
-  sql.connect(config, (err) => {
-    if (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
+    if (schoolResult.recordset.length === 0) {
+      return res.status(404).json({ error: "School not found" });
     }
 
-    const request = new sql.Request();
+    const SchoolId = schoolResult.recordset[0].SchoolId
 
-    // Execute the query to retrieve the SchoolId
-    request.input("StudentId", sql.Int, StudentId);
-    request.query(schoolQuery, (schoolResults) => {
-      if (!schoolResults || !schoolResults.recordset || schoolResults.recordset.length === 0) {
-        return res.status(404).json({
-          message: "Student not found",
-        });
-      }
+    const programQuery =
+      "SELECT * FROM Program WHERE Id = @ProgramId AND Status = 1";
+    const programResult = await pool
+      .request()
+      .input("ProgramId", sql.Int, ProgramId)
+      .query(programQuery);
+    if (programResult.recordset.length === 0) {
+      return res.status(404).json({ error: "Program not found" });
+    }
 
-      const SchoolId = schoolResults.recordset[0].SchoolId;
+    const memberQuery =
+      "SELECT Id FROM Member WHERE StudentId = @StudentId AND ProgramId = @ProgramId AND Status = 1";
+    const memberResult = await pool
+      .request()
+      .input("StudentId", sql.Int, StudentId)
+      .input("ProgramId", sql.Int, ProgramId)
+      .query(memberQuery);
+    if (memberResult.recordset.length > 0) {
+      return res.status(404).json({ error: "This member already existed in this program!" });
+    }
 
-      // Execute the query to retrieve the GroupId
-      request.input("ProgramId", sql.Int, ProgramId);
-      request.query(groupQuery, (groupResults) => {
-        if (!groupResults || !groupResults.recordset || groupResults.recordset.length === 0) {
-          return res.status(404).json({
-            message: "Group not found",
-          });
-        }
+    await pool
+      .request()
+      .input("StudentId", sql.Int, StudentId)
+      .input("SchoolId", sql.Int, SchoolId)
+      .input("ProgramId", sql.Int, ProgramId)
+      .input("Status", sql.Int, 1)
+      .query(
+        "INSERT INTO Member (StudentId, SchoolId, ProgramId, Status) VALUES (@StudentId, @SchoolId, @ProgramId, @Status)"
+      );
 
-        const GroupId = groupResults.recordset[0].Id;
-
-        // Check if member already exists
-        request.input("StudentId", sql.Int, StudentId);
-        request.query(memberQuery, (error, memberResults) => {
-          if (memberResults && memberResults.recordset && memberResults.recordset.length > 0) {
-            return res.status(409).json({
-              message: "Member already exists",
-            });
-          }
-
-          // Create the member in the Member table
-          const createMemberQuery = "INSERT INTO Member (StudentId, SchoolId, GroupId, ProgramId, Status) VALUES (@StudentId, @SchoolId, @GroupId, @ProgramId, 1)";
-          const createMemberParameters = {
-            StudentId: StudentId,
-            SchoolId: SchoolId,
-            GroupId: GroupId,
-            ProgramId: ProgramId,
-          };
-
-          request.query(createMemberQuery, createMemberParameters, (error) => {
-            res.status(200).json({
-              message: "Member created successfully",
-            });
-          });
-        });
-      });
-    });
-  });
+    res.status(200).json({ message: "Member created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 module.exports = {
-    getMembersInGroup: getMembersInGroup,
-    getProgramsOfAMember: getProgramsOfAMember,
-    createMember: createMember,
-}
+  getMembersInGroup: getMembersInGroup,
+  getProgramsOfAMember: getProgramsOfAMember,
+  createMember: createMember,
+};
