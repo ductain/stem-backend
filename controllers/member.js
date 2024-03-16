@@ -62,7 +62,7 @@ const getAvailableProgramsOfAMember = async (req, res) => {
 };
 
 const createMember = async (req, res) => {
-  const StudentId = req.body.StudentId;
+  const StudentId = req.query.StudentId;
   const ProgramId = req.query.ProgramId;
   try {
     const pool = await sql.connect(config);

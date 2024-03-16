@@ -199,16 +199,12 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
  *         required: true
  *         schema:
  *           type: integer
- *     requestBody:
- *      required: true
- *      description: Input student id
- *      content:
- *          application/json:
- *              schema:
- *                  type: object
- *                  properties:
- *                      StudentId:
- *                          type: number
+ *       - in: query
+ *         name: StudentId
+ *         description: ID of the student to be added to the program
+ *         required: true
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: Member created successfully
