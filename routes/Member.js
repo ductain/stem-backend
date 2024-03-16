@@ -174,12 +174,6 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
  *                          type: string
  *                      Image:
  *                          type: string
- *                      GroupId:
- *                          type: number
- *                      GroupCode:
- *                          type: string
- *                      GroupName:
- *                          type: string
  *       404:
  *         description: Member not found
  *       500:
