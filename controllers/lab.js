@@ -43,7 +43,7 @@ const getLabByProgramId = async (req, res) => {
       .request()
       .input("ProgramId", sql.Int, programId)
       .query(
-        "SELECT l.Id, l.Code, l.Topic, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.ProgramId = @ProgramId AND l.Status = 1 AND p.Status = 1"
+        "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.ProgramId = @ProgramId AND l.Status = 1 AND p.Status = 1"
       );
     if (lab.recordset.length === 0) {
       res.status(404).json({ error: "Lab not found" });
