@@ -1,5 +1,5 @@
 const express = require("express");
-const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember } = require("../controllers/member");
+const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember } = require("../controllers/member");
 
 
 /**
@@ -123,6 +123,47 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
+ * /members/groups-of-a-student:
+ *   get:
+ *     summary: Get all program in a member
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: StudentId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: id of the student
+ *     responses:
+ *       200:
+ *         description: get all program of a member
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               type: object
+ *               properties:
+ *                      Id:
+ *                          type: number
+ *                      StudentId:
+ *                          type: number
+ *                      ClassCode:
+ *                          type: string
+ *                      FullName:
+ *                          type: string
+ *                      GroupId:
+ *                          type: number
+ *                      GroupCode:
+ *                          type: string
+ *                      GroupName:
+ *                          type: string
+ *       404:
+ *         description: Member not found
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /members/available-programs-of-a-student:
  *   get:
  *     summary: Get all available program that member not errolled
@@ -205,6 +246,7 @@ const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
 router.get("/programs-of-a-student", getProgramsOfAMember);
+router.get("/groups-of-a-student", getGroupsOfAMember);
 router.get("/available-programs-of-a-student", getAvailableProgramsOfAMember);
 router.post("/", createMember);
 

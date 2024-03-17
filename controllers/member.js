@@ -41,6 +41,26 @@ const getProgramsOfAMember = async (req, res) => {
   }
 };
 
+const getGroupsOfAMember = async (req, res) => {
+  const studentId = req.query.StudentId;
+  try {
+    const pool = await sql.connect(config);
+    const members = await pool
+      .request()
+      .input("StudentId", sql.Int, studentId)
+      .query(
+        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName FROM Member AS m JOIN [Group] as gr ON m.GroupId = gr.Id JOIN Student AS st on m.StudentId = st.Id WHERE m.StudentId = @StudentId AND m.GroupId IS NOT NULL AND m.Status = 1 AND st.Status = 1 AND gr.Status = 1"
+      );
+    if (members.recordset.length === 0) {
+      res.status(404).json({ error: "Member not found" });
+    } else {
+      res.status(200).json(members.recordset);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const getAvailableProgramsOfAMember = async (req, res) => {
   const studentId = req.query.StudentId;
   try {
@@ -49,7 +69,7 @@ const getAvailableProgramsOfAMember = async (req, res) => {
       .request()
       .input("StudentId", sql.Int, studentId)
       .query(
-        "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1 AND p.Id NOT IN (SELECT ProgramId FROM Member WHERE StudentId = @StudentId)"
+        "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1 AND p.Id NOT IN (SELECT ProgramId FROM Member WHERE StudentId = @StudentId AND Status = 1)"
       );
     if (programs.recordset.length === 0) {
       res.status(404).json({ error: "No available programs found for this member" });
@@ -131,4 +151,5 @@ module.exports = {
   getProgramsOfAMember: getProgramsOfAMember,
   createMember: createMember,
   getAvailableProgramsOfAMember: getAvailableProgramsOfAMember,
+  getGroupsOfAMember: getGroupsOfAMember,
 };
