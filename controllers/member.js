@@ -49,7 +49,7 @@ const getGroupsOfAMember = async (req, res) => {
       .request()
       .input("StudentId", sql.Int, studentId)
       .query(
-        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName FROM Member AS m JOIN [Group] as gr ON m.GroupId = gr.Id JOIN Student AS st on m.StudentId = st.Id WHERE m.StudentId = @StudentId AND m.GroupId IS NOT NULL AND m.Status = 1 AND st.Status = 1 AND gr.Status = 1"
+        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName FROM Member AS m JOIN [Group] as gr ON m.GroupId = gr.Id JOIN Student AS st on m.StudentId = st.Id JOIN Program as pr ON m.ProgramId = pr.Id WHERE m.StudentId = @StudentId AND m.GroupId IS NOT NULL AND m.Status = 1 AND st.Status = 1 AND gr.Status = 1 AND pr.Status = 1"
       );
     if (members.recordset.length === 0) {
       res.status(404).json({ error: "Member not found" });
