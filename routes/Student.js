@@ -54,6 +54,32 @@ const express = require("express");
  *   get:
  *     summary: Returns the list of all the Students
  *     tags: [Students]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of student
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field in student 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the Students

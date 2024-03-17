@@ -2,11 +2,8 @@ const sql = require("mssql");
 const config = require("../dbConfig");
 
 const getStudents = async (req, res) => {
-  const page = req.query.page || 1
-  const limit = 10
-  const { search, sortField, sortOrder } = req.query;
-  const offset = (page - 1) * limit;
-
+  const {search, page = 1, limit = 10, sortField = 'Id', sortOrder = 'ASC' } = req.query
+  
   try {
     const pool = await sql.connect(config);
     let query = "SELECT st.Id, st.SchoolYearId, st.StudentCode, st.FullName, st.Email, st.ClassCode, sc.Name AS SchoolName, st.DateOfBirth, st.Gender, st.Address AS StudentAddress FROM Student AS st JOIN School AS sc on st.SchoolId = sc.Id WHERE st.Status = 1 AND sc.Status = 1";
@@ -18,7 +15,7 @@ const getStudents = async (req, res) => {
 
     // Adding sorting
     if (sortField && sortOrder) {
-      const validSortFields = ["Id", "StudentCode", "FullName", "Email", "ClassCode", "SchoolName","StudentAddress"];
+      const validSortFields = ["Id", "StudentCode", "FullName", "Email", "ClassCode", "SchoolName", "DateOfBirth", "Gender", "StudentAddress"];
       const validSortOrders = ["asc", "desc"];
       if (
         validSortFields.includes(sortField) &&
@@ -30,6 +27,7 @@ const getStudents = async (req, res) => {
 
     // Adding paging
     if (page && limit) {
+      const offset = (page - 1) * limit;
       query += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
     }
 
