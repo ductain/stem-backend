@@ -34,6 +34,26 @@ const getGroupById = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+const getGroupByProgramId = async (req, res) => {
+  const programId = req.query.ProgramId;
+  try {
+    const pool = await sql.connect(config);
+    const group = await pool
+      .request()
+      .input("ProgramId", sql.Int, programId)
+      .query(
+        "SELECT gr.Id, gr.Code AS GroupCode, gr.Name AS GroupName, gr.TeacherId, gr.ProgramId, t.Code AS TeacherCode, t.Name AS TeacherName, p.Code AS ProgramCode, p.Name AS ProgramName FROM [Group] AS gr JOIN Teacher AS t ON gr.TeacherId = t.Id JOIN Program AS p ON gr.ProgramId = p.Id WHERE gr.ProgramId = @ProgramId AND gr.Status = 1 AND t.Status = 1 AND p.Status = 1"
+      );
+    if (group.recordset.length === 0) {
+      res.status(404).json({ error: "Group not found" });
+    } else {
+      res.status(200).json(group.recordset);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 const countGroupsInProgram = async (req, res) => {
   const ProgramId = parseInt(req.query.programId);
 
@@ -109,4 +129,5 @@ module.exports = {
   getGroupById: getGroupById,
   countGroupsInProgram: countGroupsInProgram,
   createGroup: createGroup,
+  getGroupByProgramId: getGroupByProgramId,
 };
