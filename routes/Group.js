@@ -1,4 +1,4 @@
-const { getGroups, getGroupById, countGroupsInProgram } = require("../controllers/group");
+const { getGroups, getGroupById, countGroupsInProgram, createGroup } = require("../controllers/group");
 const express = require("express");
 
 /**
@@ -130,9 +130,16 @@ const express = require("express");
  *   post:
  *     summary: Create a new group
  *     tags: [Groups]
+ *     parameters:
+ *       - in: query
+ *         name: ProgramId
+ *         description: ID of the program
+ *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *      required: true
- *      description: Input name
+ *      description: Input Name, TeacherId
  *      content:
  *          application/json:
  *              schema:
@@ -140,9 +147,13 @@ const express = require("express");
  *                  properties:
  *                      Name:
  *                          type: string
+ *                      TeacherId:
+ *                          type: number
  *     responses:
  *       200:
- *         description: Province created successfully
+ *         description: Group created successfully
+ *       404:
+ *         description: Teacher not found
  *       500:
  *         description: Internal Server Error 
  */
@@ -205,5 +216,6 @@ const router = express.Router();
 router.get("/", getGroups);
 router.get("/:Id", getGroupById);
 router.get('/count/count-by-program', countGroupsInProgram)
+router.post("/", createGroup);
 
 module.exports = router;

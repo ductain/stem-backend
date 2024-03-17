@@ -11,7 +11,7 @@ const getGroups = async (req, res) => {
       );
     res.status(200).json(groups.recordset);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -31,7 +31,7 @@ const getGroupById = async (req, res) => {
       res.status(200).json(group.recordset[0]);
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 const countGroupsInProgram = async (req, res) => {
@@ -49,12 +49,64 @@ const countGroupsInProgram = async (req, res) => {
     const groupCount = result.recordset[0].GroupCount;
     res.status(200).json({groupCount});
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  
+};
+
+const createGroup = async (req, res) => {
+  const ProgramId = req.query.ProgramId;
+  const TeacherId = req.body.TeacherId;
+  const Name = req.body.Name;
+  const Status = 1;
+
+  try {
+    const pool = await sql.connect(config);
+
+    // Check if ProgramId exists
+    const program = await pool.request().input('ProgramId', sql.Int, ProgramId).query('SELECT * FROM Program WHERE Id = @ProgramId AND Status = 1');
+    if (program.recordset.length === 0) {
+      res.status(404).json({ error: "Program not found" });
+      return;
+    }
+
+    // Check if TeacherId exists
+    const teacher = await pool.request().input('TeacherId', sql.Int, TeacherId).query('SELECT * FROM Teacher WHERE Id = @TeacherId AND Status = 1');
+    if (teacher.recordset.length === 0) {
+      res.status(404).json({ error: "Teacher not found" });
+      return;
+    }
+
+    // Generate unique Code
+    const lastGroup = await pool.request().query('SELECT TOP 1 Code FROM [Group] WHERE Status = 1 ORDER BY Code DESC');
+    const lastCode = lastGroup.recordset.length > 0 ? parseInt(lastGroup.recordset[0].Code.slice(3)) : 0;
+    const Code = 'GRO' + String(lastCode + 1).padStart(3, '0');
+
+    // Check if Name is unique
+    const existingGroup = await pool.request().input('Name', sql.NVarChar, Name).query('SELECT * FROM [Group] WHERE Name = @Name AND Status = 1');
+    if (existingGroup.recordset.length > 0) {
+      res.status(400).json({ error: "Group name already exists" });
+      return;
+    }
+
+    // Create new group
+    await pool.request()
+      .input('Code', sql.NVarChar, Code)
+      .input('Name', sql.NVarChar, Name)
+      .input('ProgramId', sql.Int, ProgramId)
+      .input('TeacherId', sql.Int, TeacherId)
+      .input('Status', sql.Int, Status)
+      .query(
+        "INSERT INTO [Group] (Code, Name, ProgramId, TeacherId, Status) VALUES (@Code, @Name, @ProgramId, @TeacherId, @Status)"
+      );
+
+    res.status(200).json({ message: "Group created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 module.exports = {
   getGroups: getGroups,
   getGroupById: getGroupById,
   countGroupsInProgram: countGroupsInProgram,
+  createGroup: createGroup,
 };
