@@ -2,16 +2,40 @@ const sql = require("mssql");
 const config = require("../dbConfig");
 
 const getPrograms = async (req, res) => {
+  const {
+    search,
+    page = 1,
+    limit = 10,
+    sortField = "Id",
+    sortOrder = "ASC",
+  } = req.query;
+
   try {
     const pool = await sql.connect(config);
-    const programs = await pool
-      .request()
-      .query(
-        "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1"
-      );
+    let query =
+      "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1";
+
+    // Adding search filter
+    if (search) {
+      query += ` AND p.Name LIKE '%${search}%'`;
+    }
+
+    // Adding sorting
+    if (sortField && sortOrder) {
+      query += ` ORDER BY ${sortField} ${sortOrder}`;
+    }
+
+    // Adding paging
+    if (page && limit) {
+      const offset = (page - 1) * limit;
+      query += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
+    }
+
+    const programs = await pool.request().query(query);
+
     res.status(200).json(programs.recordset);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
