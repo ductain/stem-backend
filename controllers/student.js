@@ -2,13 +2,39 @@ const sql = require("mssql");
 const config = require("../dbConfig");
 
 const getStudents = async (req, res) => {
+  const page = req.query.page || 1
+  const limit = 10
+  const { search, sortField, sortOrder } = req.query;
+  const offset = (page - 1) * limit;
+
   try {
     const pool = await sql.connect(config);
-    const students = await pool
-      .request()
-      .query(
-        "SELECT st.Id, st.SchoolYearId, st.StudentCode, st.FullName, st.Email, st.ClassCode, sc.Name AS SchoolName, st.DateOfBirth, st.Gender, st.Address AS StudentAddress FROM Student AS st JOIN School AS sc on st.SchoolId = sc.Id WHERE st.Status = 1 AND sc.Status = 1"
-      );
+    let query = "SELECT st.Id, st.SchoolYearId, st.StudentCode, st.FullName, st.Email, st.ClassCode, sc.Name AS SchoolName, st.DateOfBirth, st.Gender, st.Address AS StudentAddress FROM Student AS st JOIN School AS sc on st.SchoolId = sc.Id WHERE st.Status = 1 AND sc.Status = 1";
+
+    // Adding search filter
+    if (search) {
+      query += ` AND st.FullName LIKE '%${search}%'`;
+    }
+
+    // Adding sorting
+    if (sortField && sortOrder) {
+      const validSortFields = ["Id", "StudentCode", "FullName", "Email", "ClassCode", "SchoolName","StudentAddress"];
+      const validSortOrders = ["asc", "desc"];
+      if (
+        validSortFields.includes(sortField) &&
+        validSortOrders.includes(sortOrder.toLowerCase())
+      ) {
+        query += ` ORDER BY ${sortField} ${sortOrder}`;
+      }
+    }
+
+    // Adding paging
+    if (page && limit) {
+      query += ` OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY`;
+    }
+
+    const students = await pool.request().query(query);
+
     res.status(200).json(students.recordset);
   } catch (error) {
     res.status(500).json(error);
