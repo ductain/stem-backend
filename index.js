@@ -49,24 +49,8 @@ app.use(
 
 app.use(cookieParser())
 
-// app.use(
-//   session({
-//     secret: 'fakwfnwjan',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//       httpOnly: true,
-//       maxAge: 24 * 60 * 60 * 1000,
-//       secure: true,
-//       sameSite: 'none'
-//     },
-//   })
-// );
-
-
 
 app.use(passport.initialize());
-// app.use(passport.session());
 
 const authRoute = require("./routes/Auth");
 const provinceRoute = require("./routes/Province");
@@ -82,7 +66,10 @@ const groupRoute = require("./routes/Group");
 const teamRoute = require("./routes/Team");
 const memberRoute = require("./routes/Member");
 const teamSolutionRoute = require("./routes/TeamSolution");
+const memberInTeamRoute = require('./routes/MemberInTeam')
+
 app.use(express.json());
+
 app.use("/auth", authRoute);
 app.use("/api/v1/provinces", provinceRoute);
 app.use("/api/v1/schools", schoolRoute);
@@ -97,6 +84,8 @@ app.use("/api/v1/groups", groupRoute);
 app.use("/api/v1/teams", teamRoute);
 app.use("/api/v1/members", memberRoute);
 app.use("/api/v1/team-solution", teamSolutionRoute);
+app.use("/api/v1/member-in-team", memberInTeamRoute);
+
 app.listen(port, () => {
   console.log(`Backend is running at port ${port}`);
 });
