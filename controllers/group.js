@@ -128,17 +128,17 @@ const createGroup = async (req, res) => {
     }
 
     // Create new group
-    await pool.request()
+    const result = await pool.request()
       .input('Code', sql.NVarChar, Code)
       .input('Name', sql.NVarChar, Name)
       .input('ProgramId', sql.Int, ProgramId)
       .input('TeacherId', sql.Int, TeacherId)
       .input('Status', sql.Int, Status)
       .query(
-        "INSERT INTO [Group] (Code, Name, ProgramId, TeacherId, Status) VALUES (@Code, @Name, @ProgramId, @TeacherId, @Status)"
+        "INSERT INTO [Group] (Code, Name, ProgramId, TeacherId, Status) OUTPUT INSERTED.* VALUES (@Code, @Name, @ProgramId, @TeacherId, @Status)"
       );
 
-    res.status(200).json({ message: "Group created successfully" });
+    res.status(200).json(result.recordset[0]);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

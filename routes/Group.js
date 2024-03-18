@@ -218,6 +218,23 @@ const express = require("express");
  *     responses:
  *       200:
  *         description: Group created successfully
+ *         content:
+ *          application/json:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      Id:
+ *                          type: number
+ *                      Code:
+ *                          type: string
+ *                      Name:
+ *                          type: string
+ *                      Status:
+ *                          type: number
+ *                      ProgramId:
+ *                          type: number
+ *                      TeacherId:
+ *                          type: number
  *       404:
  *         description: Teacher not found
  *       500:
