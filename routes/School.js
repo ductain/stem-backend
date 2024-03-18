@@ -1,4 +1,4 @@
-const { getSchools, getSchoolById } = require("../controllers/school");
+const { getSchools, getSchoolById, getSchoolsByProvinceId } = require("../controllers/school");
 const express = require("express");
 
 /**
@@ -85,6 +85,32 @@ const express = require("express");
 
 /**
  * @swagger
+ * /api/v1/schools/school-list/schools-in-province:
+ *   get:
+ *     summary: Get all schools in province
+ *     tags: [Schools]
+ *     parameters:
+ *       - in: query
+ *         name: ProvinceId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The province id
+ *     responses:
+ *       200:
+ *         description: get all school in province
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:           
+ *                  $ref: '#/components/schemas/School'
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /api/v1/schools:
  *   post:
  *     summary: Create a new school
@@ -163,5 +189,6 @@ const router = express.Router();
 
 router.get("/", getSchools);
 router.get("/:Id", getSchoolById);
+router.get("/school-list/schools-in-province", getSchoolsByProvinceId);
 
 module.exports = router;
