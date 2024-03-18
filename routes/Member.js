@@ -1,5 +1,6 @@
 const express = require("express");
 const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember, getMembersNotInGroup, updateMemberGroup } = require("../controllers/member");
+const { getTeamOfAMember } = require("../controllers/memberInTeam");
 
 
 /**
@@ -272,6 +273,41 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
+ * /api/v1/members/team-of-a-member:
+ *   get:
+ *     summary: Get team id of a member
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: StudentId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: student id of the member
+ *       - in: query
+ *         name: ProgramId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: program id of the member
+ *     responses:
+ *       200:
+ *         description: get team id of a member
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               type: object
+ *               properties:
+ *                      TeamId:
+ *                          type: number
+ *       404:
+ *         description: Team not found
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /api/v1/members:
  *   post:
  *     summary: Create a new member into program
@@ -333,6 +369,7 @@ const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
 router.get("/members-not-in-group", getMembersNotInGroup);
+router.get("/team-of-a-member", getTeamOfAMember);
 router.get("/programs-of-a-student", getProgramsOfAMember);
 router.get("/groups-of-a-student", getGroupsOfAMember);
 router.get("/available-programs-of-a-student", getAvailableProgramsOfAMember);

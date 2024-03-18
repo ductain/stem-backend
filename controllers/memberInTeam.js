@@ -17,6 +17,29 @@ const getAllMembersInTeam = async (req, res) => {
   }
 };
 
+const getTeamOfAMember = async(req, res) => {
+    const studentId = req.query.StudentId;
+    const programId = req.query.ProgramId;
+  try {
+    const pool = await sql.connect(config);
+    const team = await pool
+      .request()
+      .input("StudentId", sql.Int, studentId)
+      .input("ProgramId", sql.Int, programId)
+      .query(
+        "SELECT TeamId From MembersInTeam WHERE MemberId = (SELECT Id FROM Member WHERE StudentId = @StudentId AND ProgramId = @ProgramId AND Status = 1)"
+      );
+      if (team.recordset.length === 0) {
+        res.status(404).json({ error: "Team not found" });
+      } else {
+        res.status(200).json(team.recordset[0]);
+      }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
     getAllMembersInTeam: getAllMembersInTeam,
+    getTeamOfAMember: getTeamOfAMember,
 }
