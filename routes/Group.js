@@ -1,4 +1,4 @@
-const { getGroups, getGroupById, countGroupsInProgram, createGroup, getGroupByProgramId } = require("../controllers/group");
+const { getGroups, getGroupById, countGroupsInProgram, createGroup, getGroupByProgramId, getAvailableGroupsInSchool } = require("../controllers/group");
 const express = require("express");
 
 /**
@@ -130,6 +130,44 @@ const express = require("express");
 
 /**
  * @swagger
+ * /api/v1/groups/group-list/available-groups-in-school:
+ *   get:
+ *     summary: Get all the groups available in school of a specific program
+ *     tags: [Groups]
+ *     parameters:
+ *       - in: query
+ *         name: SchoolId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: school id
+ *       - in: query
+ *         name: ProgramId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: program id
+ *     responses:
+ *       200:
+ *         description: get all available groups in school of a specific program
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  properties:        
+ *                      Id:
+ *                          type: number
+ *                      GroupCode:
+ *                          type: string
+ *                      Name:
+ *                          type: string
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /api/v1/groups/count/count-by-program:
  *   get:
  *     summary: Get the count of groups in a program
@@ -244,6 +282,7 @@ const router = express.Router();
 router.get("/", getGroups);
 router.get("/:Id", getGroupById);
 router.get("/group-list/groups-of-a-program", getGroupByProgramId);
+router.get("/group-list/available-groups-in-school", getAvailableGroupsInSchool);
 router.get('/count/count-by-program', countGroupsInProgram)
 router.post("/", createGroup);
 

@@ -54,6 +54,25 @@ const getGroupByProgramId = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+const getAvailableGroupsInSchool = async (req, res) => {
+  const { SchoolId, ProgramId } = req.query;
+
+  try {
+    const pool = await sql.connect(config);
+    const groups = await pool
+      .request()
+      .input('SchoolId', sql.Int, SchoolId)
+      .input('ProgramId', sql.Int, ProgramId)
+      .query(
+        "SELECT DISTINCT g.Id, g.Code AS GroupCode, g.Name FROM [Group] AS g JOIN Member AS m ON g.Id = m.GroupId WHERE m.SchoolId = @SchoolId AND m.ProgramId = @ProgramId AND g.Status = 1 AND m.Status = 1"
+      );
+    res.status(200).json(groups.recordset);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const countGroupsInProgram = async (req, res) => {
   const ProgramId = parseInt(req.query.programId);
 
@@ -130,4 +149,5 @@ module.exports = {
   countGroupsInProgram: countGroupsInProgram,
   createGroup: createGroup,
   getGroupByProgramId: getGroupByProgramId,
+  getAvailableGroupsInSchool: getAvailableGroupsInSchool,
 };
