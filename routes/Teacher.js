@@ -1,4 +1,4 @@
-const { getTeachers, getTeacherById } = require("../controllers/teacher");
+const { getTeachers, getTeacherById, getTeachersBySchoolId } = require("../controllers/teacher");
 const express = require("express");
 
 /**
@@ -30,6 +30,9 @@ const express = require("express");
  *         Address:
  *           type: string
  *           description: address of the teacher
+ *         SchoolId:
+ *           type: number
+ *           description: school id of the teacher
  *         SchoolCode:
  *           type: string
  *           description: code of the school
@@ -86,6 +89,32 @@ const express = require("express");
  *               $ref: '#/components/schemas/Teacher'
  *       404:
  *         description: Teacher not found
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
+ * /api/v1/teachers/teacher-list/teachers-in-school:
+ *   get:
+ *     summary: get all teachers in school
+ *     tags: [Teachers]
+ *     parameters:
+ *       - in: query
+ *         name: SchoolId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The school id
+ *     responses:
+ *       200:
+ *         description: get all teachers in school
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:        
+ *                  $ref: '#/components/schemas/Teacher'
  *       500:
  *         description: Internal Server Error 
  */
@@ -170,5 +199,6 @@ const router = express.Router();
 
 router.get("/", getTeachers);
 router.get("/:Id", getTeacherById);
+router.get('/teacher-list/teachers-in-school', getTeachersBySchoolId)
 
 module.exports = router;
