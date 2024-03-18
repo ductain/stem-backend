@@ -168,6 +168,33 @@ const createMember = async (req, res) => {
   }
 };
 
+const updateMemberGroup = async (req, res) => {
+  const Id = req.query.Id;
+  const GroupId = req.body.GroupId
+  try {
+    const pool = await sql.connect(config);
+
+    // Check if the member exists and does not have a GroupId
+    const member = await pool.request().input('MemberId', sql.Int, Id).query('SELECT * FROM Member WHERE Id = @MemberId AND GroupId IS NULL');
+    if (member.recordset.length === 0) {
+      res.status(404).json({ error: "Member not found or already in a group" });
+      return;
+    }
+
+    // Update the GroupId for the member
+    await pool.request()
+      .input('MemberId', sql.Int, Id)
+      .input('GroupId', sql.Int, GroupId)
+      .query(
+        "UPDATE Member SET GroupId = @GroupId WHERE Id = @MemberId"
+      );
+
+    res.status(200).json({ message: "GroupId updated for member successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getMembersInGroup: getMembersInGroup,
   getProgramsOfAMember: getProgramsOfAMember,
@@ -175,4 +202,5 @@ module.exports = {
   getAvailableProgramsOfAMember: getAvailableProgramsOfAMember,
   getGroupsOfAMember: getGroupsOfAMember,
   getMembersNotInGroup: getMembersNotInGroup,
+  updateMemberGroup: updateMemberGroup
 };

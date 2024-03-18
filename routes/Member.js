@@ -1,5 +1,5 @@
 const express = require("express");
-const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember, getMembersNotInGroup } = require("../controllers/member");
+const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember, getMembersNotInGroup, updateMemberGroup } = require("../controllers/member");
 
 
 /**
@@ -297,6 +297,38 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
  *       500:
  *         description: Internal Server Error 
  */
+
+/**
+ * @swagger
+ * /api/v1/members:
+ *  put:
+ *    summary: Update group for member
+ *    tags: [Members]
+ *    parameters:
+ *      - in: query
+ *        name: Id
+ *        schema:
+ *          type: number
+ *        required: true
+ *        description: The member id
+ *    requestBody:
+ *      required: true
+ *      description: Update GroupId
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *               GroupId:
+ *                  type: number
+ *    responses:
+ *      200:
+ *        description: GroupId updated for member successfully
+ *      404:
+ *        description: Member not found or already in a group
+ *      500:
+ *        description: Internal Server Error
+ */
 const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
@@ -305,5 +337,6 @@ router.get("/programs-of-a-student", getProgramsOfAMember);
 router.get("/groups-of-a-student", getGroupsOfAMember);
 router.get("/available-programs-of-a-student", getAvailableProgramsOfAMember);
 router.post("/", createMember);
+router.put("/", updateMemberGroup);
 
 module.exports = router;
