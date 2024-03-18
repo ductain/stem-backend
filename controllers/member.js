@@ -61,6 +61,28 @@ const getGroupsOfAMember = async (req, res) => {
   }
 };
 
+const getMembersNotInGroup = async (req, res) => {
+  const schoolId = req.query.SchoolId;
+  const programId = req.query.ProgramId;
+  try {
+    const pool = await sql.connect(config);
+    const members = await pool
+      .request()
+      .input("SchoolId", sql.Int, schoolId)
+      .input("ProgramId", sql.Int, programId)
+      .query(
+        "SELECT m.Id, m.SchoolId, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName FROM Member AS m JOIN Student AS st on m.StudentId = st.Id JOIN Program as pr ON m.ProgramId = pr.Id WHERE m.ProgramId = @ProgramId AND m.SchoolId = @SchoolId AND m.GroupId IS NULL AND m.Status = 1 AND st.Status = 1 AND pr.Status = 1"
+      );
+    if (members.recordset.length === 0) {
+      res.status(404).json({ error: "Member not found" });
+    } else {
+      res.status(200).json(members.recordset);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const getAvailableProgramsOfAMember = async (req, res) => {
   const studentId = req.query.StudentId;
   try {
@@ -152,4 +174,5 @@ module.exports = {
   createMember: createMember,
   getAvailableProgramsOfAMember: getAvailableProgramsOfAMember,
   getGroupsOfAMember: getGroupsOfAMember,
+  getMembersNotInGroup: getMembersNotInGroup,
 };

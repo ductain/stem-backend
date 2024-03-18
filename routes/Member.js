@@ -1,5 +1,5 @@
 const express = require("express");
-const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember } = require("../controllers/member");
+const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember, getMembersNotInGroup } = require("../controllers/member");
 
 
 /**
@@ -223,6 +223,55 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
+ * /api/v1/members/members-not-in-group:
+ *   get:
+ *     summary: Get all member not in group of a program
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: SchoolId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: school id of the member
+ *       - in: query
+ *         name: ProgramId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: program id of the member
+ *     responses:
+ *       200:
+ *         description: get all member that not in group
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               type: object
+ *               properties:
+ *                      Id:
+ *                          type: number
+ *                      SchoolId:
+ *                          type: number
+ *                      StudentId:
+ *                          type: number
+ *                      ClassCode:
+ *                          type: string
+ *                      FullName:
+ *                          type: string
+ *                      ProgramId:
+ *                          type: number
+ *                      ProgramCode:
+ *                          type: string
+ *                      ProgramName:
+ *                          type: string
+ *       404:
+ *         description: Member not found
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /api/v1/members:
  *   post:
  *     summary: Create a new member into program
@@ -251,6 +300,7 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
+router.get("/members-not-in-group", getMembersNotInGroup);
 router.get("/programs-of-a-student", getProgramsOfAMember);
 router.get("/groups-of-a-student", getGroupsOfAMember);
 router.get("/available-programs-of-a-student", getAvailableProgramsOfAMember);
