@@ -31,7 +31,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /news:
+ * /api/v1/news:
  *   get:
  *     summary: Returns the list of all the News
  *     tags: [News]
@@ -50,7 +50,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /news/{Id}:
+ * /api/v1/news/{Id}:
  *   get:
  *     summary: Get the News by id
  *     tags: [News]
@@ -76,7 +76,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /news:
+ * /api/v1/news:
  *   post:
  *     summary: Create a new
  *     tags: [News]
@@ -99,7 +99,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /news/{Id}:
+ * /api/v1/news/{Id}:
  *  put:
  *    summary: Update the news by the id
  *    tags: [News]
@@ -131,7 +131,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /news/{Id}:
+ * /api/v1/news/{Id}:
  *  delete:
  *    summary: Delete the news by the id
  *    tags: [News]

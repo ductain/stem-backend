@@ -53,7 +53,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs:
+ * /api/v1/programs:
  *   get:
  *     summary: Returns the list of all the programs
  *     tags: [Programs]
@@ -98,7 +98,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs/{Id}:
+ * /api/v1/programs/{Id}:
  *   get:
  *     summary: Get the program by id
  *     tags: [Programs]
@@ -124,7 +124,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs:
+ * /api/v1/programs:
  *   post:
  *     summary: Create a new program
  *     tags: [Programs]
@@ -160,7 +160,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs/{Id}:
+ * /api/v1/programs/{Id}:
  *  put:
  *    summary: Update the program by the id
  *    tags: [Programs]
@@ -196,7 +196,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /programs/{Id}:
+ * /api/v1/programs/{Id}:
  *  delete:
  *    summary: Delete the program by the id
  *    tags: [Programs]

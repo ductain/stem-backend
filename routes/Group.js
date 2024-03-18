@@ -57,7 +57,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups:
+ * /api/v1/groups:
  *   get:
  *     summary: Returns the list of all the Groups
  *     tags: [Groups]
@@ -76,7 +76,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups/group-list/groups-of-a-program:
+ * /api/v1/groups/group-list/groups-of-a-program:
  *   get:
  *     summary: Get all Groups by program id
  *     tags: [Groups]
@@ -104,7 +104,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups/{Id}:
+ * /api/v1/groups/{Id}:
  *   get:
  *     summary: Get the Group by Group code
  *     tags: [Groups]
@@ -130,7 +130,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups/count/count-by-program:
+ * /api/v1/groups/count/count-by-program:
  *   get:
  *     summary: Get the count of groups in a program
  *     tags: [Groups]
@@ -154,7 +154,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups:
+ * /api/v1/groups:
  *   post:
  *     summary: Create a new group
  *     tags: [Groups]
@@ -188,7 +188,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups/{Id}:
+ * /api/v1/groups/{Id}:
  *  put:
  *    summary: Update the group by the id
  *    tags: [Groups]
@@ -220,7 +220,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /groups/{Id}:
+ * /api/v1/groups/{Id}:
  *  delete:
  *    summary: Delete the group by the id
  *    tags: [Groups]

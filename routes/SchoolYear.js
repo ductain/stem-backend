@@ -30,7 +30,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school-year:
+ * /api/v1/school-year:
  *   get:
  *     summary: Returns the list of all the SchoolYears
  *     tags: [SchoolYears]
@@ -49,7 +49,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school-year/{Id}:
+ * /api/v1/school-year/{Id}:
  *   get:
  *     summary: Get the SchoolYear by id
  *     tags: [SchoolYears]
@@ -75,7 +75,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school-year:
+ * /api/v1/school-year:
  *   post:
  *     summary: Create a new SchoolYears
  *     tags: [SchoolYears]
@@ -99,7 +99,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school-year/{Id}:
+ * /api/v1/school-year/{Id}:
  *  put:
  *    summary: Update the SchoolYears by the id
  *    tags: [SchoolYears]
@@ -132,7 +132,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /school-year/{Id}:
+ * /api/v1/school-year/{Id}:
  *  delete:
  *    summary: Delete the SchoolYears by the id
  *    tags: [SchoolYears]

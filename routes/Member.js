@@ -44,7 +44,7 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
- * /members/member-in-group:
+ * /api/v1/members/member-in-group:
  *   get:
  *     summary: Get all members in the group
  *     tags: [Members]
@@ -70,7 +70,7 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
- * /members/programs-of-a-student:
+ * /api/v1/members/programs-of-a-student:
  *   get:
  *     summary: Get all program in a member
  *     tags: [Members]
@@ -123,7 +123,7 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
- * /members/groups-of-a-student:
+ * /api/v1/members/groups-of-a-student:
  *   get:
  *     summary: Get all program in a member
  *     tags: [Members]
@@ -170,7 +170,7 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
- * /members/available-programs-of-a-student:
+ * /api/v1/members/available-programs-of-a-student:
  *   get:
  *     summary: Get all available program that member not errolled
  *     tags: [Members]
@@ -223,7 +223,7 @@ const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgr
 
 /**
  * @swagger
- * /members:
+ * /api/v1/members:
  *   post:
  *     summary: Create a new member into program
  *     tags: [Members]

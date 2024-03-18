@@ -32,7 +32,7 @@ const { createTeam, updateTeam, deleteTeam, getAllTeamsInGroup } = require('../c
 
 /**
  * @swagger
- * /teams/team-in-group:
+ * /api/v1/teams/team-in-group:
  *   get:
  *     summary: Get all teams in a group
  *     tags: [Teams]
@@ -56,7 +56,7 @@ const { createTeam, updateTeam, deleteTeam, getAllTeamsInGroup } = require('../c
 
 /**
  * @swagger
- * /teams/create:
+ * /api/v1/teams/create:
  *   post:
  *     summary: Create a new team
  *     tags: [Teams]
@@ -90,7 +90,7 @@ const { createTeam, updateTeam, deleteTeam, getAllTeamsInGroup } = require('../c
 
 /**
  * @swagger
- * /teams/{Id}:
+ * /api/v1/teams/{Id}:
  *  put:
  *    summary: Update the team by the id
  *    tags: [Teams]
@@ -124,7 +124,7 @@ const { createTeam, updateTeam, deleteTeam, getAllTeamsInGroup } = require('../c
 
 /**
  * @swagger
- * /teams/{Id}:
+ * /api/v1/teams/{Id}:
  *  delete:
  *    summary: Delete the team by the id
  *    tags: [Teams]

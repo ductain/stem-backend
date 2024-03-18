@@ -50,7 +50,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /students:
+ * /api/v1/students:
  *   get:
  *     summary: Returns the list of all the Students
  *     tags: [Students]
@@ -95,7 +95,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /students/{StudentCode}:
+ * /api/v1/students/{StudentCode}:
  *   get:
  *     summary: Get the Student by student code
  *     tags: [Students]
@@ -121,7 +121,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /students/student-profile/student-by-email:
+ * /api/v1/students/student-profile/student-by-email:
  *   get:
  *     summary: Get the Student by email
  *     tags: [Students]
@@ -147,7 +147,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /students:
+ * /api/v1/students:
  *   post:
  *     summary: Create a new student
  *     tags: [Students]
@@ -170,7 +170,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /students/{Id}:
+ * /api/v1/students/{Id}:
  *  put:
  *    summary: Update the student by the id
  *    tags: [Students]
@@ -203,7 +203,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /students/{Id}:
+ * /api/v1/students/{Id}:
  *  delete:
  *    summary: Delete the student by the id
  *    tags: [Students]

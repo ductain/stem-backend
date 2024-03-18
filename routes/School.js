@@ -40,7 +40,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schools:
+ * /api/v1/schools:
  *   get:
  *     summary: Returns the list of all the Schools
  *     tags: [Schools]
@@ -59,7 +59,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schools/{Id}:
+ * /api/v1/schools/{Id}:
  *   get:
  *     summary: Get the School by id
  *     tags: [Schools]
@@ -85,7 +85,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schools:
+ * /api/v1/schools:
  *   post:
  *     summary: Create a new school
  *     tags: [Schools]
@@ -108,7 +108,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schools/{Id}:
+ * /api/v1/schools/{Id}:
  *  put:
  *    summary: Update the school by the id
  *    tags: [Schools]
@@ -140,7 +140,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /schools/{Id}:
+ * /api/v1/schools/{Id}:
  *  delete:
  *    summary: Delete the school by the id
  *    tags: [Schools]

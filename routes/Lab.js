@@ -63,7 +63,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /labs:
+ * /api/v1/labs:
  *   get:
  *     summary: Returns the list of all the Labs
  *     tags: [Labs]
@@ -82,7 +82,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /labs/lab-list/labs-in-program:
+ * /api/v1/labs/lab-list/labs-in-program:
  *   get:
  *     summary: Get all Labs by program id
  *     tags: [Labs]
@@ -108,7 +108,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /labs/{Id}:
+ * /api/v1/labs/{Id}:
  *   get:
  *     summary: Get the Lab by id
  *     tags: [Labs]
@@ -134,7 +134,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /labs:
+ * /api/v1/labs:
  *   post:
  *     summary: Create a new lab
  *     tags: [Labs]
@@ -176,7 +176,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /labs/{Id}:
+ * /api/v1/labs/{Id}:
  *  put:
  *    summary: Update the lab by the id
  *    tags: [Labs]
@@ -218,7 +218,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /labs/{Id}:
+ * /api/v1/labs/{Id}:
  *  delete:
  *    summary: Delete the lab by the id
  *    tags: [Labs]

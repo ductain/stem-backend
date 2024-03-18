@@ -47,7 +47,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teachers:
+ * /api/v1/teachers:
  *   get:
  *     summary: Returns the list of all the Teachers
  *     tags: [Teachers]
@@ -66,7 +66,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teachers/{Id}:
+ * /api/v1/teachers/{Id}:
  *   get:
  *     summary: Get the teacher by teacher id
  *     tags: [Teachers]
@@ -92,7 +92,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teachers:
+ * /api/v1/teachers:
  *   post:
  *     summary: Create a new teacher
  *     tags: [Teachers]
@@ -115,7 +115,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teachers/{Id}:
+ * /api/v1/teachers/{Id}:
  *  put:
  *    summary: Update the teacher by the id
  *    tags: [Teachers]
@@ -147,7 +147,7 @@ const express = require("express");
 
 /**
  * @swagger
- * /teachers/{Id}:
+ * /api/v1/teachers/{Id}:
  *  delete:
  *    summary: Delete the teacher by the id
  *    tags: [Teachers]

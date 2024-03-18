@@ -20,10 +20,10 @@ const options = {
     },
     servers: [
       {
-        url: "https://stem-backend.vercel.app/api/v1",
+        url: "https://stem-backend.vercel.app/",
       },
       {
-        url: "http://localhost:5000/api/v1",
+        url: "http://localhost:5000/",
       },
     ],
   },
@@ -81,6 +81,7 @@ const tutorialRoute = require("./routes/Tutorial");
 const groupRoute = require("./routes/Group");
 const teamRoute = require("./routes/Team");
 const memberRoute = require("./routes/Member");
+const teamSolutionRoute = require("./routes/TeamSolution");
 app.use(express.json());
 app.use("/auth", authRoute);
 app.use("/api/v1/provinces", provinceRoute);
@@ -95,6 +96,7 @@ app.use("/api/v1/tutorials", tutorialRoute);
 app.use("/api/v1/groups", groupRoute);
 app.use("/api/v1/teams", teamRoute);
 app.use("/api/v1/members", memberRoute);
+app.use("/api/v1/team-solution", teamSolutionRoute);
 app.listen(port, () => {
   console.log(`Backend is running at port ${port}`);
 });
