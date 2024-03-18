@@ -65,7 +65,7 @@ const getAvailableGroupsInSchool = async (req, res) => {
       .input('SchoolId', sql.Int, SchoolId)
       .input('ProgramId', sql.Int, ProgramId)
       .query(
-        "SELECT DISTINCT g.Id, g.Code AS GroupCode, g.Name FROM [Group] AS g JOIN Member AS m ON g.Id = m.GroupId WHERE m.SchoolId = @SchoolId AND m.ProgramId = @ProgramId AND g.Status = 1 AND m.Status = 1"
+        "SELECT DISTINCT g.Id, g.Code AS GroupCode, g.Name FROM [Group] AS g JOIN Teacher AS t ON g.TeacherId = t.Id JOIN Program AS pr ON g.ProgramId = pr.Id WHERE t.SchoolId = @SchoolId AND g.ProgramId = @ProgramId AND g.Status = 1 AND t.Status = 1 AND pr.Status = 1"
       );
     res.status(200).json(groups.recordset);
   } catch (error) {
