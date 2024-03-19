@@ -7,12 +7,12 @@ const loginSuccess = (req, res) => {
   if (token) {
     try {
       // Verify and decode the JWT token
-      const decoded = jwt.verify(token, 'rommel');
+      const decoded = jwt.verify(token, "rommel");
 
       // The user information is available in the decoded payload
       const user = decoded.user;
 
-      if (user.Role === 'Student') {
+      if (user.Role === "Student") {
         // Query the student account based on the user's email
         const query = "SELECT Id FROM Student WHERE Email = @email";
         const parameters = { email: user.Email };
@@ -38,7 +38,41 @@ const loginSuccess = (req, res) => {
               });
             }
 
-            const userId = results.recordset.length > 0 ? results.recordset[0].Id : null;
+            const userId =
+              results.recordset.length > 0 ? results.recordset[0].Id : null;
+
+            res.status(200).json({
+              success: true,
+              message: "Login successful",
+              user: user,
+              userId: userId,
+            });
+          });
+        });
+      } else if (user.Role === "Teacher") {
+        const query = "SELECT Id FROM Teacher WHERE Email = @email";
+        const parameters = { email: user.Email };
+
+        sql.connect(config, (err) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Database error",
+            });
+          }
+
+          const request = new sql.Request();
+          request.input("email", sql.NVarChar, user.Email);
+          request.query(query, (error, results) => {
+            if (error) {
+              return res.status(500).json({
+                success: false,
+                message: "Database error",
+              });
+            }
+
+            const userId =
+              results.recordset.length > 0 ? results.recordset[0].Id : null;
 
             res.status(200).json({
               success: true,
@@ -78,7 +112,7 @@ const loginFailed = (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie("token");
   // req.logout(function (err) {
   //   if (err) {
   //     return next(err);
