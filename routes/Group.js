@@ -1,4 +1,4 @@
-const { getGroups, getGroupById, countGroupsInProgram, createGroup, getGroupByProgramId, getAvailableGroupsInSchool } = require("../controllers/group");
+const { getGroups, getGroupById, countGroupsInProgram, createGroup, getGroupByProgramId, getAvailableGroupsInSchool, getGroupOfATeacherInProgram } = require("../controllers/group");
 const express = require("express");
 
 /**
@@ -90,6 +90,40 @@ const express = require("express");
  *     responses:
  *       200:
  *         description: get all groups by program id
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Group'
+ *       404:
+ *         description: Group not found
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
+ * /api/v1/groups/group-list/groups-of-a-teacher:
+ *   get:
+ *     summary: Get all Groups of a teacher
+ *     tags: [Groups]
+ *     parameters:
+ *       - in: query
+ *         name: ProgramId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: id of the program
+ *       - in: query
+ *         name: TeacherId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: id of the teacher
+ *     responses:
+ *       200:
+ *         description: get all groups of teacher
  *         content:
  *           application/json:
  *             schema:        
@@ -299,6 +333,7 @@ const router = express.Router();
 router.get("/", getGroups);
 router.get("/:Id", getGroupById);
 router.get("/group-list/groups-of-a-program", getGroupByProgramId);
+router.get("/group-list/groups-of-a-teacher", getGroupOfATeacherInProgram);
 router.get("/group-list/available-groups-in-school", getAvailableGroupsInSchool);
 router.get('/count/count-by-program', countGroupsInProgram)
 router.post("/", createGroup);
