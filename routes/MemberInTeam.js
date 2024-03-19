@@ -1,6 +1,8 @@
 const express = require("express");
-const { getAllMembersInTeam } = require("../controllers/memberInTeam");
-
+const {
+  getAllMembersInTeam,
+  addMemberIntoTeam,
+} = require("../controllers/memberInTeam");
 
 /**
  * @swagger
@@ -30,7 +32,7 @@ const { getAllMembersInTeam } = require("../controllers/memberInTeam");
  *             schema:
  *               type: array
  *               items:
- *                  properties:        
+ *                  properties:
  *                      MemberId:
  *                          type: number
  *                      StudentCode:
@@ -44,10 +46,11 @@ const { getAllMembersInTeam } = require("../controllers/memberInTeam");
  *                      TeamName:
  *                          type: string
  *       500:
- *         description: Internal Server Error 
+ *         description: Internal Server Error
  */
-const router = express.Router()
+const router = express.Router();
 
-router.get('/', getAllMembersInTeam)
+router.get("/", getAllMembersInTeam);
+router.post("/", addMemberIntoTeam);
 
-module.exports = router
+module.exports = router;

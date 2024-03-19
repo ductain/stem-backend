@@ -7,11 +7,7 @@ const getPrograms = async (req, res) => {
     let query =
       "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1";
 
-    const listQuery = getList(
-      req,
-      ["p.Name"],
-      ["Id", "Name"]
-    );
+    const listQuery = getList(req, ["p.Name"], ["Id", "Name"]);
     const finalQuery = query + listQuery;
     const programs = await pool.request().query(finalQuery);
     res.status(200).json(programs.recordset);
@@ -30,11 +26,25 @@ const getProgramById = async (req, res) => {
       .query(
         "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Id = @Id AND p.Status = 1 AND s.Status = 1"
       );
-    if (program.recordset.length === 0) {
-      res.status(404).json({ error: "Program not found" });
-    } else {
-      res.status(200).json(program.recordset[0]);
-    }
+
+    res.status(200).json(program.recordset[0]);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const getProgramsOfTeacher = async (req, res) => {
+  const teacherId = req.query.TeacherId;
+  try {
+    const pool = await sql.connect(config);
+    const programs = await pool
+      .request()
+      .input("TeacherId", sql.Int, teacherId)
+      .query(
+        "SELECT distinct gr.ProgramId, pr.Description, pr.Name, pr.Image FROM [Group] as gr JOIN Program as pr on gr.ProgramId = pr.Id WHERE gr.TeacherId = @TeacherId AND gr.Status = 1 AND pr.Status = 1"
+      );
+
+    res.status(200).json(programs.recordset);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -135,6 +145,7 @@ const deleteProgram = async (req, res) => {
 module.exports = {
   getPrograms: getPrograms,
   getProgramById: getProgramById,
+  getProgramsOfTeacher: getProgramsOfTeacher,
   createProgram: createProgram,
   updateProgram: updateProgram,
   deleteProgram: deleteProgram,

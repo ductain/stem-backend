@@ -39,7 +39,63 @@ const getTeamOfAMember = async(req, res) => {
   }
 }
 
+const addMemberIntoTeam = async (req, res) => {
+  const teamId = req.query.TeamId
+  const memberId = req.query.MemberId
+  try {
+    const pool = await sql.connect(config);
+
+    const teamQuery =
+      "SELECT * FROM Team WHERE Id = @TeamId AND Status = 1";
+    const teamResult = await pool
+      .request()
+      .input("TeamId", sql.Int, teamId)
+      .query(teamQuery);
+
+    if (teamResult.recordset.length === 0) {
+      return res.status(404).json({ error: "Team not found" });
+    }
+
+    const memberQuery =
+      "SELECT * FROM Member WHERE Id = @MemberId AND GroupId IS NOT NULL AND Status = 1";
+    const memberResult = await pool
+      .request()
+      .input("MemberId", sql.Int, memberId)
+      .query(memberQuery);
+
+    if (memberResult.recordset.length === 0) {
+      return res.status(404).json({ error: "Member not found" });
+    }
+
+    const memberInTeamQuery =
+      "SELECT * FROM MembersInTeam WHERE MemberId = @MemberId AND TeamId = @TeamId";
+    const memberInTeamResult = await pool
+      .request()
+      .input("MemberId", sql.Int, memberId)
+      .input("TeamId", sql.Int, teamId)
+      .query(memberInTeamQuery);
+
+    if (memberInTeamResult.recordset.length > 0) {
+      return res.status(404).json({ error: "Member already existed in this program" });
+    }
+
+    await pool
+      .request()
+      .input("MemberId", sql.Int, memberId)
+      .input("TeamId", sql.Int, teamId)
+      .query(
+        "INSERT INTO MembersInTeam (MemberId, TeamId) VALUES (@MemberId, @TeamId)"
+      );
+
+    res.status(200).json({ message: "Member added successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
     getAllMembersInTeam: getAllMembersInTeam,
     getTeamOfAMember: getTeamOfAMember,
+    addMemberIntoTeam: addMemberIntoTeam,
 }

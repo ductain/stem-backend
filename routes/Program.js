@@ -1,4 +1,4 @@
-const { getPrograms, getProgramById, createProgram, updateProgram, deleteProgram } = require("../controllers/program");
+const { getPrograms, getProgramById, createProgram, updateProgram, deleteProgram, getProgramsOfTeacher } = require("../controllers/program");
 const express = require("express");
 
 /**
@@ -124,6 +124,40 @@ const express = require("express");
 
 /**
  * @swagger
+ * /api/v1/programs/program-list/programs-of-a-teacher:
+ *   get:
+ *     summary: Get all the program of a teacher
+ *     tags: [Programs]
+ *     parameters:
+ *       - in: query
+ *         name: TeacherId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The teacher Id
+ *     responses:
+ *       200:
+ *         description: get all program by teacher id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                  properties:
+ *                      ProgramId:
+ *                          type: number
+ *                      Description:
+ *                          type: string
+ *                      Name:
+ *                          type: string
+ *                      Image:
+ *                          type: string        
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /api/v1/programs:
  *   post:
  *     summary: Create a new program
@@ -218,6 +252,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", getPrograms);
+router.get("/program-list/programs-of-a-teacher", getProgramsOfTeacher);
 router.get("/:Id", getProgramById);
 router.post("/", createProgram);
 router.put("/:Id", updateProgram);
