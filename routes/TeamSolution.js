@@ -117,8 +117,6 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
  *                 $ref: '#/components/schemas/TeamSolution'
  *       500:
  *          description: Internal Server Error

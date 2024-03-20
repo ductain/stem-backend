@@ -49,7 +49,7 @@ const getTeamSolutionsByTeamId = async (req, res) => {
       .query(
         "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.TeamId = @TeamId AND ts.LabId = @LabId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
       );
-    res.status(200).json(teamSolutions.recordset);
+    res.status(200).json(teamSolutions.recordset[0]);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
