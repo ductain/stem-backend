@@ -25,7 +25,7 @@ const getTeamSolutionById = async (req, res) => {
       .request()
       .input("TeamSolutionId", sql.Int, teamSolutionId)
       .query(
-        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE Id = @TeamSolutionId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
+        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.Id = @TeamSolutionId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
       );
     if (teamSolution.recordset.length === 0) {
       res.status(404).json({ error: "Team Solution not found" });
