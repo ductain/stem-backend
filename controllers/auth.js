@@ -119,7 +119,7 @@ const logout = (req, res) => {
   //   }
   //   res.redirect("http://localhost:5173");
   // });
-  res.redirect("http://localhost:5173");
+  res.redirect("https://stem-dun.vercel.app");
 };
 
 module.exports = {
