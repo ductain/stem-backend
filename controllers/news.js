@@ -1,15 +1,19 @@
 const sql = require("mssql");
 const config = require("../dbConfig");
+const { getList } = require("../config/Utils");
 
 const getNews = async (req, res) => {
   try {
     const pool = await sql.connect(config);
-    const news = await pool
-      .request()
-      .query("SELECT Id, Title, Detail, Image FROM News WHERE Status = 1");
+    let query = "SELECT Id, Title, Detail, Image FROM News WHERE Status = 1";
+
+    const listQuery = getList(req, ["Title"], ["Id", "Title"]);
+    const finalQuery = query + listQuery;
+    const news = await pool.request().query(finalQuery);
+
     res.status(200).json(news.recordset);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

@@ -40,10 +40,43 @@ const express = require("express");
 
 /**
  * @swagger
+ * tags:
+ *   name: SchoolsInProvince
+ *   description: API to get all schools in province
+ */
+
+/**
+ * @swagger
  * /api/v1/schools:
  *   get:
  *     summary: Returns the list of all the Schools
  *     tags: [Schools]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by school name or province name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by id or school name or province name 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the Schools
@@ -88,7 +121,7 @@ const express = require("express");
  * /api/v1/schools/school-list/schools-in-province:
  *   get:
  *     summary: Get all schools in province
- *     tags: [Schools]
+ *     tags: [SchoolsInProvince]
  *     parameters:
  *       - in: query
  *         name: ProvinceId
@@ -96,6 +129,31 @@ const express = require("express");
  *           type: number
  *         required: true
  *         description: The province id
+ *       - in: query
+ *         name: search
+ *         description: search by school name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by id or school name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all school in province

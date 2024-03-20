@@ -63,6 +63,13 @@ const express = require("express");
 
 /**
  * @swagger
+ * tags:
+ *   name: LabInProgram
+ *   description: API to return all labs in program
+ */
+
+/**
+ * @swagger
  * /api/v1/labs:
  *   get:
  *     summary: Returns the list of all the Labs
@@ -111,7 +118,7 @@ const express = require("express");
  * /api/v1/labs/lab-list/labs-in-program:
  *   get:
  *     summary: Get all Labs by program id
- *     tags: [Labs]
+ *     tags: [LabInProgram]
  *     parameters:
  *       - in: query
  *         name: ProgramId

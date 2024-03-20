@@ -53,6 +53,13 @@ const express = require("express");
 
 /**
  * @swagger
+ * tags:
+ *   name: ProgramList
+ *   description: API to get program list
+ */
+
+/**
+ * @swagger
  * /api/v1/programs:
  *   get:
  *     summary: Returns the list of all the programs
@@ -127,7 +134,7 @@ const express = require("express");
  * /api/v1/programs/program-list/programs-of-a-teacher:
  *   get:
  *     summary: Get all the program of a teacher
- *     tags: [Programs]
+ *     tags: [ProgramList]
  *     parameters:
  *       - in: query
  *         name: TeacherId

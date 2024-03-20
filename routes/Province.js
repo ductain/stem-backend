@@ -32,6 +32,32 @@ const express = require("express");
  *   get:
  *     summary: Returns the list of all the provinces
  *     tags: [Provinces]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by id or code or name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the provinces

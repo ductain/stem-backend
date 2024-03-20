@@ -50,10 +50,43 @@ const express = require("express");
 
 /**
  * @swagger
+ * tags:
+ *   name: TeachersInSchool
+ *   description: API to get all teachers in school
+ */
+
+/**
+ * @swagger
  * /api/v1/teachers:
  *   get:
  *     summary: Returns the list of all the Teachers
  *     tags: [Teachers]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by name and code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of student
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field by id and name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the teachers
@@ -98,7 +131,7 @@ const express = require("express");
  * /api/v1/teachers/teacher-list/teachers-in-school:
  *   get:
  *     summary: get all teachers in school
- *     tags: [Teachers]
+ *     tags: [TeachersInSchool]
  *     parameters:
  *       - in: query
  *         name: SchoolId
@@ -106,6 +139,31 @@ const express = require("express");
  *           type: number
  *         required: true
  *         description: The school id
+ *       - in: query
+ *         name: search
+ *         description: search by name and code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of student
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field by id and name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all teachers in school

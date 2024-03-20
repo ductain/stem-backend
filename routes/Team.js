@@ -43,6 +43,31 @@ const { createTeam, updateTeam, deleteTeam, getAllTeamsInGroup } = require('../c
  *         required: true
  *         schema:
  *           type: integer
+ *       - in: query
+ *         name: search
+ *         description: search by name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of student
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field by id and name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful operation

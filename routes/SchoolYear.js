@@ -34,6 +34,32 @@ const express = require("express");
  *   get:
  *     summary: Returns the list of all the SchoolYears
  *     tags: [SchoolYears]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by start date or end date
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by id or start date or end date
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the SchoolYears

@@ -54,6 +54,13 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
 
 /**
  * @swagger
+ * tags:
+ *   name: TeamSolutionsList
+ *   description: API to get list of teams
+ */
+
+/**
+ * @swagger
  * /api/v1/team-solution:
  *   get:
  *     summary: Returns the list of all the team solution
@@ -102,7 +109,7 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
  * /api/v1/team-solution/team-solution-list/solutions-of-team:
  *   get:
  *     summary: Returns the list include all the team solution in team
- *     tags: [TeamSolutions]
+ *     tags: [TeamSolutionsList]
  *     parameters:
  *       - in: query
  *         name: TeamId
@@ -138,6 +145,31 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
  *           type: string
  *         required: true
  *         description: The team solution Id
+ *       - in: query
+ *         name: search
+ *         description: search by topic
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of student
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field by id and topic
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The team solution description by id

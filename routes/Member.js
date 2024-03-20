@@ -45,10 +45,24 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
 
 /**
  * @swagger
+ * tags:
+ *   name: MembersInGroup
+ *   description: API to get all members in group
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: MemberList
+ *   description: API to get members list
+ */
+
+/**
+ * @swagger
  * /api/v1/members/member-in-group:
  *   get:
  *     summary: Get all members in the group
- *     tags: [Members]
+ *     tags: [MembersInGroup]
  *     parameters:
  *       - in: query
  *         name: GroupId
@@ -99,7 +113,7 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  * /api/v1/members/programs-of-a-student:
  *   get:
  *     summary: Get all program in a member
- *     tags: [Members]
+ *     tags: [MemberList]
  *     parameters:
  *       - in: query
  *         name: StudentId
@@ -177,7 +191,7 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  * /api/v1/members/groups-of-a-student:
  *   get:
  *     summary: Get all program in a member
- *     tags: [Members]
+ *     tags: [MemberList]
  *     parameters:
  *       - in: query
  *         name: StudentId
@@ -249,7 +263,7 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  * /api/v1/members/available-programs-of-a-student:
  *   get:
  *     summary: Get all available program that member not errolled
- *     tags: [Members]
+ *     tags: [MemberList]
  *     parameters:
  *       - in: query
  *         name: StudentId
@@ -257,6 +271,31 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  *           type: number
  *         required: true
  *         description: id of the student
+ *       - in: query
+ *         name: search
+ *         description: search by program name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by member id or program name 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Get all available program that member not errolled
@@ -302,7 +341,7 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  * /api/v1/members/members-not-in-group:
  *   get:
  *     summary: Get all member not in group of a program
- *     tags: [Members]
+ *     tags: [MemberList]
  *     parameters:
  *       - in: query
  *         name: SchoolId
@@ -376,7 +415,7 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  * /api/v1/members/members-not-in-team:
  *   get:
  *     summary: Get all member not in team
- *     tags: [Members]
+ *     tags: [MemberList]
  *     parameters:
  *       - in: query
  *         name: GroupId
@@ -412,7 +451,7 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  * /api/v1/members/team-of-a-member:
  *   get:
  *     summary: Get team id of a member
- *     tags: [Members]
+ *     tags: [MemberList]
  *     parameters:
  *       - in: query
  *         name: StudentId

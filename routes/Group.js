@@ -46,6 +46,13 @@ const express = require("express");
 
 /**
  * @swagger
+ * tags:
+ *   name: GroupList
+ *   description: The Group List managing API
+ */
+
+/**
+ * @swagger
  * /api/v1/groups:
  *   get:
  *     summary: Returns the list of all the Groups
@@ -94,7 +101,7 @@ const express = require("express");
  * /api/v1/groups/group-list/groups-of-a-program:
  *   get:
  *     summary: Get all Groups by program id
- *     tags: [Groups]
+ *     tags: [GroupList]
  *     parameters:
  *       - in: query
  *         name: ProgramId
@@ -147,7 +154,7 @@ const express = require("express");
  * /api/v1/groups/group-list/groups-of-a-teacher:
  *   get:
  *     summary: Get all Groups of a teacher
- *     tags: [Groups]
+ *     tags: [GroupList]
  *     parameters:
  *       - in: query
  *         name: ProgramId
@@ -232,7 +239,7 @@ const express = require("express");
  * /api/v1/groups/group-list/available-groups-in-school:
  *   get:
  *     summary: Get all the groups available in school of a specific program
- *     tags: [Groups]
+ *     tags: [GroupList]
  *     parameters:
  *       - in: query
  *         name: SchoolId

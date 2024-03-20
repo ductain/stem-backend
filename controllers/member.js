@@ -120,16 +120,18 @@ const getAvailableProgramsOfAMember = async (req, res) => {
   const studentId = req.query.StudentId;
   try {
     const pool = await sql.connect(config);
+    let query =
+      "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1 AND p.Id NOT IN (SELECT ProgramId FROM Member WHERE StudentId = @StudentId AND Status = 1)";
+
+    const listQuery = getList(req, ["p.Name"], ["Id", "Name"]);
+    const finalQuery = query + listQuery;
     const programs = await pool
       .request()
       .input("StudentId", sql.Int, studentId)
-      .query(
-        "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1 AND p.Id NOT IN (SELECT ProgramId FROM Member WHERE StudentId = @StudentId AND Status = 1)"
-      );
+      .query(finalQuery);
+
     if (programs.recordset.length === 0) {
-      res
-        .status(404)
-        .json({ error: "No available programs found for this member" });
+      res.status(404).json({ error: "No available programs found for this member" });
     } else {
       res.status(200).json(programs.recordset);
     }

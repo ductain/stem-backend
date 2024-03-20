@@ -35,6 +35,32 @@ const express = require("express");
  *   get:
  *     summary: Returns the list of all the News
  *     tags: [News]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by title
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by id or title 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the News

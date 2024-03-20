@@ -2,15 +2,6 @@ const sql = require("mssql");
 const config = require("../dbConfig");
 
 const getProvinces = async (req, res) => {
-  // try {
-  //   const pool = await sql.connect(config);
-  //   const provinces = await pool
-  //     .request()
-  //     .query("SELECT Id, Code, Name FROM Province WHERE Status = 1");
-  //   res.status(200).json(provinces.recordset);
-  // } catch (error) {
-  //   res.status(500).json(error);
-  // }
   try {
     const { search, page, limit, sortField, sortOrder } = req.query;
 

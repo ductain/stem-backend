@@ -1,12 +1,16 @@
 const sql = require("mssql");
 const config = require("../dbConfig");
+const { getList } = require("../config/Utils");
 
 const getSchoolYear = async (req, res) => {
   try {
     const pool = await sql.connect(config);
-    const schoolYears = await pool
-      .request()
-      .query("SELECT Id, StartDate, EndDate FROM SchoolYear WHERE Status = 1");
+    let query = "SELECT Id, StartDate, EndDate FROM SchoolYear WHERE Status = 1";
+
+    const listQuery = getList(req, ["StartDate", "EndDate"], ["Id", "StartDate", "EndDate"]);
+    const finalQuery = query + listQuery;
+    const schoolYears = await pool.request().query(finalQuery);
+
     res.status(200).json(schoolYears.recordset);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });

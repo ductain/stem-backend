@@ -1,5 +1,7 @@
 const sql = require("mssql");
 const config = require("../dbConfig");
+const { getList } = require("../config/Utils");
+
 
 const getAllTeamsInGroup = async (req, res) => {
   try {
@@ -14,15 +16,22 @@ const getAllTeamsInGroup = async (req, res) => {
     if (groupResult.recordset.length === 0) {
       return res.status(404).json({ error: "Group not found" });
     }
+
+    let query = "SELECT Id, TeamName, Members, GroupId FROM Team WHERE GroupId = @GroupId AND Status = 1";
+
+    const listQuery = getList(req, ["TeamName"], ["Id", "TeamName"]);
+    const finalQuery = query + listQuery;
     const teams = await pool
       .request()
       .input("GroupId", sql.Int, req.query.GroupId)
-      .query("SELECT Id, TeamName, Members, GroupId FROM Team WHERE GroupId = @GroupId AND Status = 1");
+      .query(finalQuery);
+
     res.status(200).json(teams.recordset);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 const createTeam = async (req, res) => {
   try {
     const pool = await sql.connect(config);
