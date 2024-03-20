@@ -113,13 +113,8 @@ const loginFailed = (req, res) => {
 
 const logout = (req, res) => {
   res.clearCookie("token");
-  // req.logout(function (err) {
-  //   if (err) {
-  //     return next(err);
-  //   }
-  //   res.redirect("http://localhost:5173");
-  // });
-  res.redirect("http://localhost:5173");
+  // res.redirect("http://localhost:5173");
+  res.redirect("https://stem-dun.vercel.app");
 };
 
 module.exports = {
