@@ -34,6 +34,9 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
  *         Description:
  *           type: string
  *           description: description of the team solution
+ *         Image:
+ *           type: string
+ *           description: image of lab
  *         TeamId:
  *           type: number
  *           description: team id of the team solution

@@ -6,7 +6,7 @@ const getTeamSolutions = async (req, res) => {
   try {
     const pool = await sql.connect(config);
     let query =
-      "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.Status = 1 AND l.Status = 1 AND l.Status = 1";
+      "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, l.Image, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.Status = 1 AND l.Status = 1 AND l.Status = 1";
 
     const listQuery = getList(req, ["l.Topic"], ["Id", "Topic"]);
     const finalQuery = query + listQuery;
@@ -25,7 +25,7 @@ const getTeamSolutionById = async (req, res) => {
       .request()
       .input("TeamSolutionId", sql.Int, teamSolutionId)
       .query(
-        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.Id = @TeamSolutionId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
+        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, l.Image, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.Id = @TeamSolutionId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
       );
     if (teamSolution.recordset.length === 0) {
       res.status(404).json({ error: "Team Solution not found" });
@@ -47,7 +47,7 @@ const getTeamSolutionsByTeamId = async (req, res) => {
       .input("TeamId", sql.Int, teamId)
       .input("LabId", sql.Int, labId)
       .query(
-        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.TeamId = @TeamId AND ts.LabId = @LabId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
+        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, l.Image, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.TeamId = @TeamId AND ts.LabId = @LabId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
       );
     res.status(200).json(teamSolutions.recordset[0]);
   } catch (error) {
