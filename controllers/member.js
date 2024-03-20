@@ -1,16 +1,21 @@
 const sql = require("mssql");
 const config = require("../dbConfig");
+const { getList } = require("../config/Utils");
 
 const getMembersInGroup = async (req, res) => {
   const groupId = req.query.GroupId;
   try {
     const pool = await sql.connect(config);
+    let query =
+      "SELECT m.Id, m.GroupId, gr.Code AS GroupCode, gr.Name, m.SchoolId, m.StudentId, st.StudentCode, st.FullName FROM Member AS m JOIN [Group] AS gr ON m.GroupId = gr.Id JOIN Student AS st ON m.StudentId = st.Id WHERE gr.Id = @GroupId AND m.Status = 1 AND gr.Status = 1 AND st.Status = 1";
+
+    const listQuery = getList(req, ["gr.Name", "st.FullName"], ["Id", "Name", "FullName"]);
+    const finalQuery = query + listQuery;
     const members = await pool
       .request()
       .input("GroupId", sql.Int, groupId)
-      .query(
-        "SELECT m.Id, m.GroupId, gr.Code AS GroupCode, gr.Name, m.SchoolId, m.StudentId, st.StudentCode, st.FullName FROM Member AS m JOIN [Group] AS gr ON m.GroupId = gr.Id JOIN Student AS st ON m.StudentId = st.Id WHERE gr.Id = @GroupId AND m.Status = 1 AND gr.Status = 1 AND st.Status = 1"
-      );
+      .query(finalQuery);
+
     if (members.recordset.length === 0) {
       res.status(404).json({ error: "Member not found" });
     } else {
@@ -25,12 +30,16 @@ const getProgramsOfAMember = async (req, res) => {
   const studentId = req.query.StudentId;
   try {
     const pool = await sql.connect(config);
+    let query =
+      "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName, pr.SchoolYearId, pr.CreatedDate, pr.UpdatedDate, pr.Description, pr.Image FROM Member AS m JOIN Program as pr ON m.ProgramId = pr.Id JOIN Student AS st on m.StudentId = st.Id WHERE m.StudentId = @StudentId AND m.Status = 1 AND pr.Status = 1 AND st.Status = 1";
+
+    const listQuery = getList(req, ["pr.Name", "st.FullName"], ["Id", "ProgramName", "FullName"]);
+    const finalQuery = query + listQuery;
     const members = await pool
       .request()
       .input("StudentId", sql.Int, studentId)
-      .query(
-        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName, pr.SchoolYearId, pr.CreatedDate, pr.UpdatedDate, pr.Description, pr.Image FROM Member AS m JOIN Program as pr ON m.ProgramId = pr.Id JOIN Student AS st on m.StudentId = st.Id WHERE m.StudentId = @StudentId AND m.Status = 1 AND pr.Status = 1 AND st.Status = 1"
-      );
+      .query(finalQuery);
+
     if (members.recordset.length === 0) {
       res.status(404).json({ error: "Member not found" });
     } else {
@@ -45,12 +54,16 @@ const getGroupsOfAMember = async (req, res) => {
   const studentId = req.query.StudentId;
   try {
     const pool = await sql.connect(config);
+    let query =
+      "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName FROM Member AS m JOIN [Group] as gr ON m.GroupId = gr.Id JOIN Student AS st on m.StudentId = st.Id JOIN Program as pr ON m.ProgramId = pr.Id WHERE m.StudentId = @StudentId AND m.GroupId IS NOT NULL AND m.Status = 1 AND st.Status = 1 AND gr.Status = 1 AND pr.Status = 1";
+
+    const listQuery = getList(req, ["gr.Name", "st.FullName", "pr.Name"], ["Id", "GroupName"]);
+    const finalQuery = query + listQuery;
     const members = await pool
       .request()
       .input("StudentId", sql.Int, studentId)
-      .query(
-        "SELECT m.Id, m.StudentId, st.ClassCode, st.FullName, m.GroupId, gr.Code AS GroupCode, gr.Name AS GroupName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName FROM Member AS m JOIN [Group] as gr ON m.GroupId = gr.Id JOIN Student AS st on m.StudentId = st.Id JOIN Program as pr ON m.ProgramId = pr.Id WHERE m.StudentId = @StudentId AND m.GroupId IS NOT NULL AND m.Status = 1 AND st.Status = 1 AND gr.Status = 1 AND pr.Status = 1"
-      );
+      .query(finalQuery);
+
     if (members.recordset.length === 0) {
       res.status(404).json({ error: "Member not found" });
     } else {
@@ -66,13 +79,17 @@ const getMembersNotInGroup = async (req, res) => {
   const programId = req.query.ProgramId;
   try {
     const pool = await sql.connect(config);
+    let query =
+      "SELECT m.Id, m.SchoolId, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName FROM Member AS m JOIN Student AS st on m.StudentId = st.Id JOIN Program as pr ON m.ProgramId = pr.Id WHERE m.ProgramId = @ProgramId AND m.SchoolId = @SchoolId AND m.GroupId IS NULL AND m.Status = 1 AND st.Status = 1 AND pr.Status = 1";
+
+    const listQuery = getList(req, ["st.FullName", "pr.Name"], ["Id", "FullName"]);
+    const finalQuery = query + listQuery;
     const members = await pool
       .request()
       .input("SchoolId", sql.Int, schoolId)
       .input("ProgramId", sql.Int, programId)
-      .query(
-        "SELECT m.Id, m.SchoolId, m.StudentId, st.ClassCode, st.FullName, m.ProgramId, pr.Code AS ProgramCode, pr.Name AS ProgramName FROM Member AS m JOIN Student AS st on m.StudentId = st.Id JOIN Program as pr ON m.ProgramId = pr.Id WHERE m.ProgramId = @ProgramId AND m.SchoolId = @SchoolId AND m.GroupId IS NULL AND m.Status = 1 AND st.Status = 1 AND pr.Status = 1"
-      );
+      .query(finalQuery);
+
     if (members.recordset.length === 0) {
       res.status(404).json({ error: "Member not found" });
     } else {

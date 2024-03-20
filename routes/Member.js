@@ -56,6 +56,31 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  *           type: number
  *         required: true
  *         description: id of the group
+ *       - in: query
+ *         name: search
+ *         description: search by group name or student name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by member id or group name or student name 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all member by group id
@@ -82,6 +107,31 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  *           type: number
  *         required: true
  *         description: id of the student
+ *       - in: query
+ *         name: search
+ *         description: search by program name or student name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by member id or program name or student name 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all program of a member
@@ -135,6 +185,31 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  *           type: number
  *         required: true
  *         description: id of the student
+ *       - in: query
+ *         name: search
+ *         description: search by group name or student name or program name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by member id or group name 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all program of a member
@@ -241,6 +316,31 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
  *           type: number
  *         required: true
  *         description: program id of the member
+ *       - in: query
+ *         name: search
+ *         description: search by student name or group name
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort field by member id or student name 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all member that not in group
