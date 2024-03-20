@@ -1,5 +1,5 @@
 const express = require('express')
-const { getTeamSolutions, getTeamSolutionById, createTeamSolution } = require('../controllers/teamSolution')
+const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSolutionsByTeamId } = require('../controllers/teamSolution')
 
 /**
  * @swagger
@@ -96,6 +96,31 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution } = require('.
 
 /**
  * @swagger
+ * /api/v1/team-solution/team-solution-list/solutions-of-team:
+ *   get:
+ *     summary: Returns the list include all the team solution in team
+ *     tags: [TeamSolutions]
+ *     parameters:
+ *       - in: query
+ *         name: TeamId
+ *         description: team id
+ *         schema:
+ *           type: number
+ *     responses:
+ *       200:
+ *         description: The list of the team solutions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/TeamSolution'
+ *       500:
+ *          description: Internal Server Error
+ */
+
+/**
+ * @swagger
  * /api/v1/team-solution/{Id}:
  *   get:
  *     summary: Get the team solution by id
@@ -159,6 +184,7 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution } = require('.
  */
 const router = express.Router()
 router.get('/', getTeamSolutions)
+router.get('/team-solution-list/solutions-of-team', getTeamSolutionsByTeamId)
 router.get('/:Id', getTeamSolutionById)
 router.post('/', createTeamSolution)
 
