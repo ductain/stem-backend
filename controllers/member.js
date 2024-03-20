@@ -83,6 +83,22 @@ const getMembersNotInGroup = async (req, res) => {
   }
 };
 
+const getMembersNotInTeam = async (req, res) => {
+  const groupId = req.query.GroupId;
+  try {
+    const pool = await sql.connect(config);
+    const members = await pool
+      .request()
+      .input("GroupId", sql.Int, groupId)
+      .query(
+        "SELECT m.Id AS MemberId, m.StudentId, st.StudentCode, st.FullName, st.ClassCode FROM Member as m JOIN Student AS st on m.StudentId = st.Id WHERE m.GroupId = @GroupId AND m.Id NOT IN (SELECT MemberId FROM MembersInTeam WHERE TeamId is not null) AND m.Status = 1 AND st.Status = 1"
+      );
+    res.status(200).json(members.recordset);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const getAvailableProgramsOfAMember = async (req, res) => {
   const studentId = req.query.StudentId;
   try {
@@ -94,7 +110,9 @@ const getAvailableProgramsOfAMember = async (req, res) => {
         "SELECT p.Id, p.Code, p.Name, p.Description, p.Image, p.CreatedDate, p.UpdatedDate, p.SchoolYearId, s.StartDate, s.EndDate FROM Program AS p JOIN SchoolYear AS s ON p.SchoolYearId = s.Id WHERE p.Status = 1 AND s.Status = 1 AND p.Id NOT IN (SELECT ProgramId FROM Member WHERE StudentId = @StudentId AND Status = 1)"
       );
     if (programs.recordset.length === 0) {
-      res.status(404).json({ error: "No available programs found for this member" });
+      res
+        .status(404)
+        .json({ error: "No available programs found for this member" });
     } else {
       res.status(200).json(programs.recordset);
     }
@@ -129,7 +147,7 @@ const createMember = async (req, res) => {
       return res.status(404).json({ error: "School not found" });
     }
 
-    const SchoolId = schoolResult.recordset[0].SchoolId
+    const SchoolId = schoolResult.recordset[0].SchoolId;
 
     const programQuery =
       "SELECT * FROM Program WHERE Id = @ProgramId AND Status = 1";
@@ -149,7 +167,9 @@ const createMember = async (req, res) => {
       .input("ProgramId", sql.Int, ProgramId)
       .query(memberQuery);
     if (memberResult.recordset.length > 0) {
-      return res.status(404).json({ error: "This member already existed in this program!" });
+      return res
+        .status(404)
+        .json({ error: "This member already existed in this program!" });
     }
 
     await pool
@@ -170,26 +190,30 @@ const createMember = async (req, res) => {
 
 const updateMemberGroup = async (req, res) => {
   const Id = req.query.Id;
-  const GroupId = req.body.GroupId
+  const GroupId = req.body.GroupId;
   try {
     const pool = await sql.connect(config);
 
     // Check if the member exists and does not have a GroupId
-    const member = await pool.request().input('MemberId', sql.Int, Id).query('SELECT * FROM Member WHERE Id = @MemberId AND GroupId IS NULL');
+    const member = await pool
+      .request()
+      .input("MemberId", sql.Int, Id)
+      .query("SELECT * FROM Member WHERE Id = @MemberId AND GroupId IS NULL");
     if (member.recordset.length === 0) {
       res.status(404).json({ error: "Member not found or already in a group" });
       return;
     }
 
     // Update the GroupId for the member
-    await pool.request()
-      .input('MemberId', sql.Int, Id)
-      .input('GroupId', sql.Int, GroupId)
-      .query(
-        "UPDATE Member SET GroupId = @GroupId WHERE Id = @MemberId"
-      );
+    await pool
+      .request()
+      .input("MemberId", sql.Int, Id)
+      .input("GroupId", sql.Int, GroupId)
+      .query("UPDATE Member SET GroupId = @GroupId WHERE Id = @MemberId");
 
-    res.status(200).json({ message: "GroupId updated for member successfully" });
+    res
+      .status(200)
+      .json({ message: "GroupId updated for member successfully" });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -202,5 +226,6 @@ module.exports = {
   getAvailableProgramsOfAMember: getAvailableProgramsOfAMember,
   getGroupsOfAMember: getGroupsOfAMember,
   getMembersNotInGroup: getMembersNotInGroup,
-  updateMemberGroup: updateMemberGroup
+  getMembersNotInTeam: getMembersNotInTeam,
+  updateMemberGroup: updateMemberGroup,
 };

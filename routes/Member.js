@@ -1,5 +1,5 @@
 const express = require("express");
-const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember, getMembersNotInGroup, updateMemberGroup } = require("../controllers/member");
+const { getMembersInGroup, getProgramsOfAMember, createMember, getAvailableProgramsOfAMember, getGroupsOfAMember, getMembersNotInGroup, updateMemberGroup, getMembersNotInTeam } = require("../controllers/member");
 const { getTeamOfAMember } = require("../controllers/memberInTeam");
 
 
@@ -273,6 +273,42 @@ const { getTeamOfAMember } = require("../controllers/memberInTeam");
 
 /**
  * @swagger
+ * /api/v1/members/members-not-in-team:
+ *   get:
+ *     summary: Get all member not in team
+ *     tags: [Members]
+ *     parameters:
+ *       - in: query
+ *         name: GroupId
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: group id of the member
+ *     responses:
+ *       200:
+ *         description: get all member that not in team
+ *         content:
+ *           application/json:
+ *             schema:        
+ *               type: array
+ *               items:
+ *                  properties:
+ *                      MemberId:
+ *                          type: number
+ *                      StudentId:
+ *                          type: number
+ *                      StudentCode:
+ *                          type: string
+ *                      FullName:
+ *                          type: string
+ *                      ClassCode:
+ *                          type: string
+ *       500:
+ *         description: Internal Server Error 
+ */
+
+/**
+ * @swagger
  * /api/v1/members/team-of-a-member:
  *   get:
  *     summary: Get team id of a member
@@ -369,6 +405,7 @@ const router = express.Router();
 
 router.get("/member-in-group", getMembersInGroup);
 router.get("/members-not-in-group", getMembersNotInGroup);
+router.get("/members-not-in-team", getMembersNotInTeam);
 router.get("/team-of-a-member", getTeamOfAMember);
 router.get("/programs-of-a-student", getProgramsOfAMember);
 router.get("/groups-of-a-student", getGroupsOfAMember);
