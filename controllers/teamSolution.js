@@ -37,6 +37,22 @@ const getTeamSolutionById = async (req, res) => {
   }
 };
 
+const getTeamSolutionsByTeamId = async (req, res) => {
+  const teamId = req.query.TeamId;
+  try {
+    const pool = await sql.connect(config);
+    const teamSolutions = await pool
+      .request()
+      .input("TeamId", sql.Int, teamId)
+      .query(
+        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.TeamId = @TeamId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
+      );
+    res.status(200).json(teamSolutions.recordset);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const createTeamSolution = async (req, res) => {
   const LabId = req.query.LabId;
   const TeamId = req.query.TeamId;
@@ -62,26 +78,48 @@ const createTeamSolution = async (req, res) => {
       return res.status(404).json({ error: "Team not found" });
     }
 
-    await pool
+    const solutionQuery =
+      "SELECT * FROM TeamSolution WHERE LabId = @LabId AND TeamId = @TeamId AND Status = 1";
+    const solutionResult = await pool
       .request()
       .input("LabId", sql.Int, LabId)
       .input("TeamId", sql.Int, TeamId)
-      .input("Solution", sql.NVarChar, req.body.Solution)
-      .input("CreateDate", sql.DateTime, currentDate)
-      .input("UpdateDate", sql.DateTime, currentDate)
-      .input("Status", sql.Int, 1)
-      .query(
-        "INSERT INTO TeamSolution (LabId, TeamId, Solution, CreateDate, UpdateDate, Status) VALUES (@LabId, @TeamId, @Solution, @CreateDate, @UpdateDate, @Status)"
-      );
+      .query(solutionQuery);
 
-    res.status(200).json({ message: "Team solution created successfully" });
+    if (solutionResult.recordset.length > 0) {
+      await pool
+        .request()
+        .input("LabId", sql.Int, LabId)
+        .input("TeamId", sql.Int, TeamId)
+        .input("Solution", sql.NVarChar, req.body.Solution)
+        .input("UpdateDate", sql.DateTime, currentDate)
+        .query(
+          "UPDATE TeamSolution SET Solution = @Solution, UpdateDate = @UpdateDate WHERE LabId = @LabId AND TeamId = @TeamId AND Status = 1"
+        );
+      res.status(200).json({ message: "Team solution overrided successfully!" });
+    } else {
+      await pool
+        .request()
+        .input("LabId", sql.Int, LabId)
+        .input("TeamId", sql.Int, TeamId)
+        .input("Solution", sql.NVarChar, req.body.Solution)
+        .input("CreateDate", sql.DateTime, currentDate)
+        .input("UpdateDate", sql.DateTime, currentDate)
+        .input("Status", sql.Int, 1)
+        .query(
+          "INSERT INTO TeamSolution (LabId, TeamId, Solution, CreateDate, UpdateDate, Status) VALUES (@LabId, @TeamId, @Solution, @CreateDate, @UpdateDate, @Status)"
+        );
+
+      res.status(200).json({ message: "Team solution created successfully" });
+    }
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 module.exports = {
-    getTeamSolutions: getTeamSolutions,
-    getTeamSolutionById: getTeamSolutionById,
-    createTeamSolution: createTeamSolution,
+  getTeamSolutions: getTeamSolutions,
+  getTeamSolutionById: getTeamSolutionById,
+  getTeamSolutionsByTeamId: getTeamSolutionsByTeamId,
+  createTeamSolution: createTeamSolution,
 };
