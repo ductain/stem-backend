@@ -39,13 +39,15 @@ const getTeamSolutionById = async (req, res) => {
 
 const getTeamSolutionsByTeamId = async (req, res) => {
   const teamId = req.query.TeamId;
+  const labId = req.query.LabId;
   try {
     const pool = await sql.connect(config);
     const teamSolutions = await pool
       .request()
       .input("TeamId", sql.Int, teamId)
+      .input("LabId", sql.Int, labId)
       .query(
-        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.TeamId = @TeamId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
+        "SELECT ts.Id, ts.Solution, ts.Score, ts.CreateDate, ts.UpdateDate, ts.LabId, l.Topic, l.Description, ts.TeamId, t.TeamName FROM TeamSolution AS ts JOIN Lab AS l ON ts.LabId = l.Id JOIN Team AS t ON ts.TeamId = t.Id WHERE ts.TeamId = @TeamId AND ts.LabId = @LabId AND ts.Status = 1 AND l.Status = 1 AND l.Status = 1"
       );
     res.status(200).json(teamSolutions.recordset);
   } catch (error) {

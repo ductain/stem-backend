@@ -106,6 +106,11 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
  *         description: team id
  *         schema:
  *           type: number
+ *       - in: query
+ *         name: LabId
+ *         description: lab id
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: The list of the team solutions
