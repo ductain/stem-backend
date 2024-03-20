@@ -75,7 +75,7 @@ const express = require("express");
  *           type: integer
  *       - in: query
  *         name: sortField
- *         descrption: sort field in student 
+ *         description: sort field in student 
  *         schema:
  *           type: string
  *       - in: query

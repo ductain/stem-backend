@@ -39,17 +39,6 @@ const express = require("express");
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     GroupCountResponse:
- *       type: object
- *       properties:
- *         groupCount:
- *           type: integer
- */
-
-/**
- * @swagger
  * tags:
  *   name: Groups
  *   description: The Groups managing API
@@ -79,7 +68,7 @@ const express = require("express");
  *           type: integer
  *       - in: query
  *         name: sortField
- *         descrption: sort field in group 
+ *         description: sort field in group 
  *         schema:
  *           type: string
  *       - in: query
@@ -130,7 +119,7 @@ const express = require("express");
  *           type: integer
  *       - in: query
  *         name: sortField
- *         descrption: sort field in group 
+ *         description: sort field in group 
  *         schema:
  *           type: string
  *       - in: query
@@ -189,7 +178,7 @@ const express = require("express");
  *           type: integer
  *       - in: query
  *         name: sortField
- *         descrption: sort field in group 
+ *         description: sort field in group 
  *         schema:
  *           type: string
  *       - in: query
@@ -274,7 +263,7 @@ const express = require("express");
  *           type: integer
  *       - in: query
  *         name: sortField
- *         descrption: sort field in group 
+ *         description: sort field in group 
  *         schema:
  *           type: string
  *       - in: query

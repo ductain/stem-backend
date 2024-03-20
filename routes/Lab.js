@@ -67,6 +67,32 @@ const express = require("express");
  *   get:
  *     summary: Returns the list of all the Labs
  *     tags: [Labs]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by topic and lab code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort id field or topic field in lab
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the Labs
@@ -93,6 +119,31 @@ const express = require("express");
  *         required: true
  *         schema:
  *           type: integer
+ *       - in: query
+ *         name: search
+ *         description: search by topic and lab code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         description: sort id field or topic field in lab
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all labs by program id

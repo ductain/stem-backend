@@ -1,17 +1,19 @@
 const sql = require("mssql");
 const config = require("../dbConfig");
+const { getList } = require("../config/Utils");
 
 const getLabs = async (req, res) => {
   try {
     const pool = await sql.connect(config);
-    const labs = await pool
-      .request()
-      .query(
-        "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.Status = 1 AND p.Status = 1"
-      );
+    let query =
+      "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.Status = 1 AND p.Status = 1";
+
+    const listQuery = getList(req, ["l.Topic", "l.Code"], ["Id", "Topic"]);
+    const finalQuery = query + listQuery;
+    const labs = await pool.request().query(finalQuery);
     res.status(200).json(labs.recordset);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -39,19 +41,23 @@ const getLabByProgramId = async (req, res) => {
   const programId = req.query.ProgramId;
   try {
     const pool = await sql.connect(config);
+    let query =
+      "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.ProgramId = @ProgramId AND l.Status = 1 AND p.Status = 1";
+
+    const listQuery = getList(req, ["l.Topic", "l.Code"], ["Id", "Topic"]);
+    const finalQuery = query + listQuery;
     const lab = await pool
       .request()
       .input("ProgramId", sql.Int, programId)
-      .query(
-        "SELECT l.Id, l.Code, l.Topic, l.Image, l.Description, l.CreatedDate, l.EndDate, l.StartDate, l.UpdatedDate, l.ProgramId, p.Name AS ProgramName FROM Lab AS l JOIN Program AS p ON l.ProgramId = p.Id WHERE l.ProgramId = @ProgramId AND l.Status = 1 AND p.Status = 1"
-      );
+      .query(finalQuery);
+
     if (lab.recordset.length === 0) {
       res.status(404).json({ error: "Lab not found" });
     } else {
       res.status(200).json(lab.recordset);
     }
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
