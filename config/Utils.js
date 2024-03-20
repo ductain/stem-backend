@@ -2,7 +2,7 @@ const getList = (req, searchableFields = ["Name"], sortableFields = ["Id"]) => {
   const {
     search,
     page = 1,
-    limit = 10,
+    limit = 100,
     sortField = "Id",
     sortOrder = "ASC",
   } = req.query;

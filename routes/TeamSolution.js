@@ -1,5 +1,5 @@
 const express = require('express')
-const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSolutionsByTeamId } = require('../controllers/teamSolution')
+const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSolutionsByTeamId, updateScoreForSolution } = require('../controllers/teamSolution')
 
 /**
  * @swagger
@@ -185,10 +185,43 @@ const { getTeamSolutions, getTeamSolutionById, createTeamSolution, getTeamSoluti
  *       500:
  *         description: Internal Server Error 
  */
+
+/**
+ * @swagger
+ * /api/v1/team-solution/{Id}:
+ *  put:
+ *    summary: Update the score by the id
+ *    tags: [TeamSolutions]
+ *    parameters:
+ *      - in: path
+ *        name: Id
+ *        schema:
+ *          type: string
+ *          required: true
+ *          description: The solution id
+ *    requestBody:
+ *      required: true
+ *      description: Update score
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              Score:
+ *                  type: number
+ *    responses:
+ *      200:
+ *        description: Score updated successfully
+ *      404:
+ *        description: Team Solution not found
+ *      500:
+ *        description: Internal Server Error
+ */
 const router = express.Router()
 router.get('/', getTeamSolutions)
 router.get('/team-solution-list/solutions-of-team', getTeamSolutionsByTeamId)
 router.get('/:Id', getTeamSolutionById)
+router.put('/:Id', updateScoreForSolution)
 router.post('/', createTeamSolution)
 
 module.exports = router

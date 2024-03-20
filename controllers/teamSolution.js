@@ -89,6 +89,11 @@ const createTeamSolution = async (req, res) => {
       .query(solutionQuery);
 
     if (solutionResult.recordset.length > 0) {
+      if (solutionResult.recordset[0].Score !== null) {
+        return res
+          .status(400)
+          .json({ error: "Team solution has already scored" });
+      }
       await pool
         .request()
         .input("LabId", sql.Int, LabId)
@@ -98,7 +103,9 @@ const createTeamSolution = async (req, res) => {
         .query(
           "UPDATE TeamSolution SET Solution = @Solution, UpdateDate = @UpdateDate WHERE LabId = @LabId AND TeamId = @TeamId AND Status = 1"
         );
-      res.status(200).json({ message: "Team solution overrided successfully!" });
+      res
+        .status(200)
+        .json({ message: "Team solution overrided successfully!" });
     } else {
       await pool
         .request()
@@ -119,9 +126,33 @@ const createTeamSolution = async (req, res) => {
   }
 };
 
+const updateScoreForSolution = async (req, res) => {
+  const Id = req.params.Id;
+  const currentDate = new Date();
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("Score", sql.Float, req.body.Score)
+      .input("Id", sql.Int, Id)
+      .input("UpdateDate", sql.DateTime, currentDate)
+      .query(
+        "UPDATE TeamSolution SET Score = @Score, UpdateDate = @UpdateDate WHERE Id = @Id AND Status = 1"
+      );
+    if (result.rowsAffected[0] === 0) {
+      res.status(404).json({ error: "Team solution not found" });
+    } else {
+      res.status(200).json({ message: "Score updated successfully" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getTeamSolutions: getTeamSolutions,
   getTeamSolutionById: getTeamSolutionById,
   getTeamSolutionsByTeamId: getTeamSolutionsByTeamId,
   createTeamSolution: createTeamSolution,
+  updateScoreForSolution: updateScoreForSolution,
 };
