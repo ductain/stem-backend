@@ -38,24 +38,24 @@ app.use(
   swaggerUI.setup(specs, { customCssUrl: CSS_URL })
 );
 
-// app.use(
-//   cors({
-//     origin: 'http://localhost:5173',
-//     credentials: true,
-//     optionsSuccessStatus: 200,
-//     methods: "GET,POST,PUT,DELETE",
-//   })
-// );
-
-// test in vercel
 app.use(
   cors({
-    origin: 'https://stem-dun.vercel.app',
+    origin: 'http://localhost:5173',
     credentials: true,
     optionsSuccessStatus: 200,
     methods: "GET,POST,PUT,DELETE",
   })
 );
+
+// test in vercel
+// app.use(
+//   cors({
+//     origin: 'https://stem-dun.vercel.app',
+//     credentials: true,
+//     optionsSuccessStatus: 200,
+//     methods: "GET,POST,PUT,DELETE",
+//   })
+// );
 
 app.use(cookieParser())
 

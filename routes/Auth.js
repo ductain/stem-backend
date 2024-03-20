@@ -31,38 +31,35 @@ router.get("/google/callback", (req, res, next) => {
     const decoded = jwt.verify(token, 'rommel');
     const userInfo = decoded.user
 
-    // let redirectURL = '';
-    // if (userInfo.Role === 'Teacher') {
-    //   redirectURL = 'http://localhost:5173/teacher';
-    // } 
-    // else if (userInfo.Role === 'Student') {
-    //   redirectURL = 'http://localhost:5173/student';
-    // }
-    // else if (userInfo.Role === 'School Admin') {
-    //   redirectURL = 'http://localhost:5173/school-admin';
-    // }
-    // else if (userInfo.Role === 'System Admin') {
-    //   redirectURL = 'http://localhost:5173/system-admin';
-    // }
-    // else {
-    //   redirectURL = 'http://localhost:5173/manager';
-    // }
+    let redirectURL = '';
+    if (userInfo.Role === 'Teacher') {
+      redirectURL = 'http://localhost:5173/teacher';
+    } 
+    else if (userInfo.Role === 'Student') {
+      redirectURL = 'http://localhost:5173/student';
+    }
+    else if (userInfo.Role === 'System Admin') {
+      redirectURL = 'http://localhost:5173/system-admin';
+    }
+    else {
+      redirectURL = 'http://localhost:5173/manager';
+    }
     
 
     //test in vercel
-    let redirectURL = '';
-    if (userInfo.Role === 'Teacher') {
-      redirectURL = 'https://stem-dun.vercel.app/teacher';
-    } 
-    else if (userInfo.Role === 'Student') {
-      redirectURL = 'https://stem-dun.vercel.app/student';
-    }
-    else if (userInfo.Role === 'System Admin') {
-      redirectURL = 'https://stem-dun.vercel.app/system-admin';
-    }
-    else {
-      redirectURL = 'https://stem-dun.vercel.app/manager';
-    }
+    // let redirectURL = '';
+    // if (userInfo.Role === 'Teacher') {
+    //   redirectURL = 'https://stem-dun.vercel.app/teacher';
+    // } 
+    // else if (userInfo.Role === 'Student') {
+    //   redirectURL = 'https://stem-dun.vercel.app/student';
+    // }
+    // else if (userInfo.Role === 'System Admin') {
+    //   redirectURL = 'https://stem-dun.vercel.app/system-admin';
+    // }
+    // else {
+    //   redirectURL = 'https://stem-dun.vercel.app/manager';
+    // }
 
     // Set the JWT token as a cookie
     res.cookie("token", token, {
