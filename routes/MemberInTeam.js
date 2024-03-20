@@ -48,6 +48,38 @@ const {
  *       500:
  *         description: Internal Server Error
  */
+
+/**
+ * @swagger
+ * /api/v1/member-in-team:
+ *  post:
+ *    summary: add member into team
+ *    tags: [MembersInTeam]
+ *    parameters:
+ *      - in: query
+ *        name: MemberId
+ *        schema:
+ *          type: number
+ *        required: true
+ *        description: The member id
+ *    requestBody:
+ *      required: true
+ *      description: add member into team
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *               TeamId:
+ *                  type: number
+ *    responses:
+ *      200:
+ *        description: Member added successfully
+ *      404:
+ *        description: Member not found
+ *      500:
+ *        description: Internal Server Error
+ */
 const router = express.Router();
 
 router.get("/", getAllMembersInTeam);

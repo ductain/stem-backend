@@ -40,7 +40,7 @@ const getTeamOfAMember = async(req, res) => {
 }
 
 const addMemberIntoTeam = async (req, res) => {
-  const teamId = req.query.TeamId
+  const teamId = req.body.TeamId
   const memberId = req.query.MemberId
   try {
     const pool = await sql.connect(config);
