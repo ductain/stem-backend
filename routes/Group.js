@@ -61,6 +61,32 @@ const express = require("express");
  *   get:
  *     summary: Returns the list of all the Groups
  *     tags: [Groups]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         description: search by group name, group code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field in group 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: The list of the Groups
@@ -87,6 +113,31 @@ const express = require("express");
  *           type: number
  *         required: true
  *         description: id of the program
+ *       - in: query
+ *         name: search
+ *         description: search by group name, group code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field in group 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all groups by program id
@@ -121,6 +172,31 @@ const express = require("express");
  *           type: number
  *         required: true
  *         description: id of the teacher
+ *       - in: query
+ *         name: search
+ *         description: search by group name, group code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field in group 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all groups of teacher
@@ -181,6 +257,31 @@ const express = require("express");
  *           type: number
  *         required: true
  *         description: program id
+ *       - in: query
+ *         name: search
+ *         description: search by group name, group code
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: page
+ *         description: page of program
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         description: limit item per page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: sortField
+ *         descrption: sort field in group 
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: sortOrder
+ *         description: asc or desc
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: get all available groups in school of a specific program
@@ -198,30 +299,6 @@ const express = require("express");
  *                          type: string
  *       500:
  *         description: Internal Server Error 
- */
-
-/**
- * @swagger
- * /api/v1/groups/count/count-by-program:
- *   get:
- *     summary: Get the count of groups in a program
- *     tags: [Groups]
- *     parameters:
- *       - in: query
- *         name: programId
- *         description: ID of the program
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/GroupCountResponse'
- *       500:
- *         description: Internal server error
  */
 
 /**
@@ -335,7 +412,6 @@ router.get("/:Id", getGroupById);
 router.get("/group-list/groups-of-a-program", getGroupByProgramId);
 router.get("/group-list/groups-of-a-teacher", getGroupOfATeacherInProgram);
 router.get("/group-list/available-groups-in-school", getAvailableGroupsInSchool);
-router.get('/count/count-by-program', countGroupsInProgram)
 router.post("/", createGroup);
 
 module.exports = router;
